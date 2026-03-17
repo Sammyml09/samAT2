@@ -260,3 +260,49 @@
 2026-03-18 09:46:22,148 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on http://127.0.0.1:5000
 2026-03-18 09:46:22,148 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-18 10:23:58,186 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-18 10:23:58,186 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-18 10:24:02,833 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:02] "GET / HTTP/1.1" 200 -
+2026-03-18 10:24:02,846 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:02] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-03-18 10:24:02,848 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:02] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-03-18 10:24:02,853 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:02] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 10:24:02,854 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:02] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-03-18 10:24:02,868 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:02] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-18 10:24:28,600 - INFO - User registered: 'CharlieB'
+2026-03-18 10:24:28,601 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:28] "[32mPOST /api/register HTTP/1.1[0m" 302 -
+2026-03-18 10:24:28,605 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:28] "GET /home HTTP/1.1" 200 -
+2026-03-18 10:24:28,622 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:28] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-03-18 10:24:28,623 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:28] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-03-18 10:24:28,623 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:28] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 10:24:28,625 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:28] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-03-18 10:24:32,757 - INFO - User logged out: 6
+2026-03-18 10:24:32,758 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:32] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-03-18 10:24:32,764 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:32] "GET / HTTP/1.1" 200 -
+2026-03-18 10:24:32,778 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:32] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-03-18 10:24:32,779 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:32] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-03-18 10:24:32,784 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 10:24:32,784 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:32] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-03-18 10:24:36,842 - INFO - Login attempt: 'CharlieB'
+2026-03-18 10:24:37,040 - INFO - Login successful: 'CharlieB'
+2026-03-18 10:24:37,040 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:37] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-03-18 10:24:37,044 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:37] "GET /home HTTP/1.1" 200 -
+2026-03-18 10:24:37,057 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:37] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-03-18 10:24:37,061 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:37] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-03-18 10:24:37,062 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:37] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 10:24:37,063 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:37] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-03-18 10:24:39,178 - INFO - User logged out: 6
+2026-03-18 10:24:39,179 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:39] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-03-18 10:24:39,187 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:39] "GET / HTTP/1.1" 200 -
+2026-03-18 10:24:39,209 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:39] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-03-18 10:24:39,210 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:39] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-03-18 10:24:39,213 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:39] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 10:24:39,214 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:39] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-03-18 10:24:42,165 - INFO - Login attempt: 'Charlie'
+2026-03-18 10:24:42,166 - WARNING - Login failed: 'Charlie'
+2026-03-18 10:24:42,167 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:42] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-03-18 10:24:42,171 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:42] "GET / HTTP/1.1" 200 -
+2026-03-18 10:24:42,188 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:42] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-03-18 10:24:42,190 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:42] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-03-18 10:24:42,194 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:42] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 10:24:42,195 - INFO - 127.0.0.1 - - [18/Mar/2026 10:24:42] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -

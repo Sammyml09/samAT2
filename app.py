@@ -2,6 +2,7 @@ from flask import Flask, redirect, render_template, request, flash, session
 from flask_bcrypt import Bcrypt
 from datetime import timedelta
 from dotenv import load_dotenv
+import os
 import secrets
 import sqlite3
 import logging
@@ -23,7 +24,7 @@ logging.basicConfig(
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
-    SESSION_COOKIE_SECURE=False  # True when using HTTPS
+    SESSION_COOKIE_SECURE=os.getenv("FLASK_ENV") == "production"  # True in production
 )
 
 bcrypt = Bcrypt(app)
@@ -90,11 +91,11 @@ def register():
         
         # Set session
         session["user_id"] = user_id
-        logging.info(f"User registered: {username}")
+        logging.info(f"User registered: {repr(username)}")
         flash(f"Welcome, {username}! Account created successfully!")
         return redirect("/home")
     except sqlite3.IntegrityError:
-        logging.warning(f"Registration failed - duplicate: {username}")
+        logging.warning(f"Registration failed - duplicate: {repr(username)}")
         flash("Username or email already exists")
         return redirect("/")
     except Exception as e:
@@ -109,7 +110,7 @@ def login():
     username = request.form.get("username", "").strip()
     password = request.form.get("password", "").strip()
     
-    logging.info(f"Login attempt: {username}")
+    logging.info(f"Login attempt: {repr(username)}")
     
     try:
         connection = get_db_connection()
@@ -120,11 +121,11 @@ def login():
         
         if user and bcrypt.check_password_hash(user["password"], password):
             session["user_id"] = user["userID"]
-            logging.info(f"Login successful: {username}")
+            logging.info(f"Login successful: {repr(username)}")
             flash(f"Welcome back, {username}!")
             return redirect("/home")
         else:
-            logging.warning(f"Login failed: {username}")
+            logging.warning(f"Login failed: {repr(username)}")
             flash("Invalid username or password")
             return redirect("/")
     except Exception as e:
@@ -192,4 +193,4 @@ def add_sample():
 
 if __name__ == "__main__":
     logging.info("Flask application started")
-    app.run(debug=True)
+    app.run(debug=os.getenv("FLASK_DEBUG", "False").lower() == "true")
