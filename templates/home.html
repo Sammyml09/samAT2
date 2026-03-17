@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+        <title>Home - Music Diary</title>
+    </head>
+    <body>
+        <header>
+            <div class="header-container">
+                <div class="logo-section">
+                    <a href="/" class="logo">Music Diary</a>
+                </div>
+                <div class="user-section">
+                    <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+         <main class="main-container">
+            <div class="container">
+                <h1 class="page-title">Welcome to Music Diary! 🎵</h1>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                    Track, rate, and organize your favorite albums and songs in one place.
+                </p>
+
+                <div class="dashboard-grid">
+                    <a href="albums.html" style="text-decoration: none;">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-icon">📚</div>
+                            <h3>My Albums</h3>
+                            <p>Browse and manage your music collection</p>
+                        </div>
+                    </a>
+
+                    <div class="dashboard-card" onclick="document.getElementById('helpModal').classList.add('active')" style="cursor: pointer;">
+                        <div class="dashboard-card-icon">❓</div>
+                        <h3>Help & Guide</h3>
+                        <p>Learn how to use Music Diary</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; background: rgba(99, 102, 241, 0.1); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border-color);">
+                    <h2 style="color: var(--primary-color); margin-bottom: 1rem;">Getting Started 🚀</h2>
+                    <ol style="color: var(--text-secondary); line-height: 2;">
+                        <li>Visit the <strong>My Albums</strong> page to start your collection</li>
+                        <li>Create albums and provide a comment</li>
+                        <li>Add songs to each album with 5-star ratings</li>
+                        <li>Leave comments on songs</li>
+                        <li>Sort and filter your collection by various criteria</li>
+                    </ol>
+                </div>
+            </div>
+        </main>
+
+        <script src="{{ url_for('static', filename='/js/script.js') }}"></script>
+    </body>
+</html>
