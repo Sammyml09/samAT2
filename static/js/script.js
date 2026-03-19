@@ -12,6 +12,11 @@ function toggleAuthForm(form) {
   }
 }
 
+// Close modal by ID
+function closeModal(modalId) {
+  document.getElementById(modalId)?.classList.remove('active');
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('loginForm');
