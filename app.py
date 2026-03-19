@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, flash, session
+from flask import Flask, redirect, render_template, request, session, jsonify
 from flask_bcrypt import Bcrypt
 from datetime import timedelta
 from dotenv import load_dotenv
@@ -24,7 +24,7 @@ logging.basicConfig(
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
-    SESSION_COOKIE_SECURE=os.getenv("FLASK_ENV") == "production"  # True in production
+    SESSION_COOKIE_SECURE=True  # True in production
 )
 
 bcrypt = Bcrypt(app)
@@ -42,6 +42,32 @@ def get_db_connection():
     return connection
 
 
+def validate_password(password):
+
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters"
+    if not any(c.isupper() for c in password):
+        return False, "Password must contain at least one uppercase letter"
+    if not any(c.islower() for c in password):
+        return False, "Password must contain at least one lowercase letter"
+    if not any(c.isdigit() for c in password):
+        return False, "Password must contain at least one number"
+    return True, "Password is valid"
+
+
+def validate_username(username):
+    """
+    Validate username meets requirements:
+    - At least 3 characters
+    - Only uppercase and lowercase letters
+    """
+    if len(username) < 3:
+        return False, "Username must be at least 3 characters"
+    if not username.isalpha():
+        return False, "Username can only contain letters (A-Z, a-z)"
+    return True, "Username is valid"
+
+
 # ---- Routes: Authentication ----
 
 @app.route("/")
@@ -51,7 +77,6 @@ def home():
 
 @app.route("/home")
 def home_dashboard():
-    """Protected home page - only for logged in users"""
     if "user_id" not in session:
         return redirect("/")
     return render_template("home.html")
@@ -59,20 +84,25 @@ def home_dashboard():
 
 @app.route("/api/register", methods=["POST"])
 def register():
-    """Register a new user"""
     username = request.form.get("username", "").strip()
     email = request.form.get("email", "").strip()
     password = request.form.get("password", "").strip()
+    confirm_password = request.form.get("confirm_password", "").strip()
     
-    # Validation
-    if len(username) < 3:
-        flash("Username must be at least 3 characters")
+    # Validate username
+    is_valid, message = validate_username(username)
+    if not is_valid:
         return redirect("/")
-    if len(password) < 8:
-        flash("Password must be at least 8 characters")
+    
+    # Validate password format
+    is_valid, message = validate_password(password)
+    if not is_valid:
         return redirect("/")
+    
+    if password != confirm_password:
+        return redirect("/")
+    
     if "@" not in email or "." not in email:
-        flash("Invalid email format")
         return redirect("/")
     
     # Hash password
@@ -92,21 +122,17 @@ def register():
         # Set session
         session["user_id"] = user_id
         logging.info(f"User registered: {repr(username)}")
-        flash(f"Welcome, {username}! Account created successfully!")
         return redirect("/home")
     except sqlite3.IntegrityError:
         logging.warning(f"Registration failed - duplicate: {repr(username)}")
-        flash("Username or email already exists")
         return redirect("/")
     except Exception as e:
         logging.error(f"Registration error: {e}")
-        flash("An error occurred during registration")
         return redirect("/")
 
 
 @app.route("/api/login", methods=["POST"])
 def login():
-    """Login a user"""
     username = request.form.get("username", "").strip()
     password = request.form.get("password", "").strip()
     
@@ -122,26 +148,133 @@ def login():
         if user and bcrypt.check_password_hash(user["password"], password):
             session["user_id"] = user["userID"]
             logging.info(f"Login successful: {repr(username)}")
-            flash(f"Welcome back, {username}!")
             return redirect("/home")
         else:
             logging.warning(f"Login failed: {repr(username)}")
-            flash("Invalid username or password")
             return redirect("/")
     except Exception as e:
         logging.error(f"Login error: {e}")
-        flash("An error occurred during login")
         return redirect("/")
 
 
 @app.route("/api/logout", methods=["GET", "POST"])
 def logout():
-    """Logout user"""
     if "user_id" in session:
         logging.info(f"User logged out: {session['user_id']}")
     session.clear()
-    flash("You have been logged out")
     return redirect("/")
+
+
+@app.route("/api/change-password", methods=["POST"])
+def change_password():
+    """Change user password"""
+    if "user_id" not in session:
+        return redirect("/")
+    
+    user_id = session["user_id"]
+    old_password = request.form.get("old_password", "").strip()
+    new_password = request.form.get("new_password", "").strip()
+    confirm_password = request.form.get("confirm_password", "").strip()
+    
+    # Validate inputs
+    if not old_password or not new_password or not confirm_password:
+        return jsonify({"success": False, "message": "All fields are required"}), 400
+    
+    # Validate new password format
+    is_valid, message = validate_password(new_password)
+    if not is_valid:
+        return jsonify({"success": False, "message": message}), 400
+    
+    # Check passwords match
+    if new_password != confirm_password:
+        return jsonify({"success": False, "message": "New passwords do not match"}), 400
+    
+    # Check old password is different
+    if old_password == new_password:
+        return jsonify({"success": False, "message": "New password must be different from old password"}), 400
+    
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("SELECT password FROM users WHERE userID = ?", (user_id,))
+        user = cursor.fetchone()
+        connection.close()
+        
+        if not user or not bcrypt.check_password_hash(user["password"], old_password):
+            logging.warning(f"Password change failed - invalid old password: {user_id}")
+            return jsonify({"success": False, "message": "Current password is incorrect"}), 401
+        
+        # Hash new password and update database
+        hashed_password = bcrypt.generate_password_hash(new_password).decode("utf-8")
+        
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute(
+            "UPDATE users SET password = ? WHERE userID = ?",
+            (hashed_password, user_id)
+        )
+        connection.commit()
+        connection.close()
+        
+        logging.info(f"Password changed for user: {user_id}")
+        return jsonify({"success": True, "message": "Password changed successfully!"}), 200
+    
+    except Exception as e:
+        logging.error(f"Change password error: {e}")
+        return jsonify({"success": False, "message": "An error occurred while changing password"}), 500
+
+
+@app.route("/api/change-email", methods=["POST"])
+def change_email():
+    """Change user email"""
+    if "user_id" not in session:
+        return jsonify({"success": False, "message": "Please log in first"}), 401
+    
+    user_id = session["user_id"]
+    password = request.form.get("password", "").strip()
+    new_email = request.form.get("new_email", "").strip()
+    
+    # Validate inputs
+    if not password or not new_email:
+        return jsonify({"success": False, "message": "All fields are required"}), 400
+    
+    # Validate email format
+    if "@" not in new_email or "." not in new_email:
+        return jsonify({"success": False, "message": "Invalid email format"}), 400
+    
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("SELECT password, email FROM users WHERE userID = ?", (user_id,))
+        user = cursor.fetchone()
+        connection.close()
+        
+        if not user or not bcrypt.check_password_hash(user["password"], password):
+            logging.warning(f"Email change failed - invalid password: {user_id}")
+            return jsonify({"success": False, "message": "Password is incorrect"}), 401
+        
+        if user["email"] == new_email:
+            return jsonify({"success": False, "message": "New email must be different from current email"}), 400
+        
+        # Update email in database
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute(
+            "UPDATE users SET email = ? WHERE userID = ?",
+            (new_email, user_id)
+        )
+        connection.commit()
+        connection.close()
+        
+        logging.info(f"Email changed for user: {user_id}")
+        return jsonify({"success": True, "message": "Email changed successfully!"}), 200
+    
+    except sqlite3.IntegrityError:
+        logging.warning(f"Email change failed - duplicate email: {user_id}")
+        return jsonify({"success": False, "message": "Email already in use"}), 400
+    except Exception as e:
+        logging.error(f"Change email error: {e}")
+        return jsonify({"success": False, "message": "An error occurred while changing email"}), 500
 
 
 # ---- Database Setup ----

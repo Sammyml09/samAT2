@@ -4,13 +4,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
-        <title>Home - Music Diary</title>
+        <title>Home - Secure Software</title>
     </head>
     <body>
         <header>
             <div class="header-container">
                 <div class="logo-section">
-                    <a href="/" class="logo">Music Diary</a>
+                    <a href="/" class="logo">Secure Software</a>
                 </div>
                 <div class="user-section">
                     <button id="logoutBtn" class="btn btn-secondary">Logout</button>
@@ -18,73 +18,122 @@
             </div>
         </header>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
 
          <main class="main-container">
             <div class="container">
-                <h1 class="page-title">Welcome to Music Diary! 🎵</h1>
+                <h1 class="page-title">Welcome to the Account Manager</h1>
                 <p style="color: var(--text-secondary); margin-bottom: 2rem;">
-                    Track, rate, and organize your favorite albums and songs in one place.
+                    Manage your account settings and preferences in one place.
                 </p>
 
                 <div class="dashboard-grid">
-                    <a href="albums.html" style="text-decoration: none;">
-                        <div class="dashboard-card">
-                            <div class="dashboard-card-icon">📚</div>
-                            <h3>My Albums</h3>
-                            <p>Browse and manage your music collection</p>
-                        </div>
-                    </a>
-
                     <div class="dashboard-card" onclick="document.getElementById('helpModal').classList.add('active')" style="cursor: pointer;">
                         <div class="dashboard-card-icon">❓</div>
-                        <h3>Help & Guide</h3>
-                        <p>Learn how to use Music Diary</p>
+                        <h3>Account Settings</h3>
+                        <p>Change password and manage your account</p>
                     </div>
                 </div>
 
                 <div id="helpModal" class="modal">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h2>Help & Guide</h2>
+                            <h2>Account Settings</h2>
                             <button class="modal-close" onclick="closeModal('helpModal')">×</button>
                         </div>
                 
-                        <h3 style="color: var(--primary-color); margin-top: 1.5rem;">Features</h3>
-                        <ul style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-                            <li>📚 <strong>Album Management:</strong> Add, edit, and delete albums with artist and year information</li>
-                            <li>🎵 <strong>Song Tracking:</strong> Add unlimited songs to each album with ratings and comments</li>
-                            <li>⭐ <strong>5-Star Ratings:</strong> Rate each song individually to track your favorites</li>
-                            <li>🔍 <strong>Filter & Sort:</strong> Find albums by artist, year, or name</li>
-                            <li>💾 <strong>Auto-Save:</strong> Your data is automatically saved to your device</li>
-                        </ul>
+                        <!-- Change Password Section -->
+                        <div style="margin-top: 2rem;">
+                            <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;">Change Password</h3>
+                            <form action="/api/change-password" method="POST" id="changePasswordForm">
+                                <div class="form-group">
+                                    <label for="oldPassword">Current Password</label>
+                                    <input 
+                                        type="password" 
+                                        id="oldPassword"
+                                        name="old_password"
+                                        placeholder="Enter your current password"
+                                        required
+                                    >
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="newPassword">New Password</label>
+                                    <input 
+                                        type="password" 
+                                        id="newPassword"
+                                        name="new_password"
+                                        placeholder="At least 8 characters with uppercase, lowercase, and numbers"
+                                        required
+                                    >
+                                    <small>8+ characters, must include uppercase, lowercase, and numbers</small>
+                                    <div id="passwordRequirements" style="margin-top: 0.5rem; font-size: 0.9rem;">
+                                        <div id="req-length" style="color: var(--text-secondary);">✗ At least 8 characters</div>
+                                        <div id="req-upper" style="color: var(--text-secondary);">✗ One uppercase letter</div>
+                                        <div id="req-lower" style="color: var(--text-secondary);">✗ One lowercase letter</div>
+                                        <div id="req-digit" style="color: var(--text-secondary);">✗ One number</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="confirmNewPassword">Confirm New Password</label>
+                                    <input 
+                                        type="password" 
+                                        id="confirmNewPassword"
+                                        name="confirm_password"
+                                        placeholder="Re-enter your new password"
+                                        required
+                                    >
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Change Password</button>
+                            </form>
+                        </div>
 
-                        <h3 style="color: var(--primary-color);">Tips</h3>
-                        <ul style="color: var(--text-secondary);">
-                            <li>Use meaningful album titles for easy searching</li>
-                            <li>Leave comments to remember your thoughts about songs</li>
-                            <li>Sort by rating to quickly find your favorite albums</li>
-                            <li>Your data is stored locally on your device</li>
-                        </ul>
+                        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2rem 0;">
 
-                        <button class="btn btn-primary" onclick="closeModal('helpModal')" style="margin-top: 1.5rem;">Got it!</button>
+                        <!-- Change Email Section -->
+                        <div style="margin-top: 2rem;">
+                            <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;">Change Email</h3>
+                            <form action="/api/change-email" method="POST" id="changeEmailForm">
+                                <div class="form-group">
+                                    <label for="newEmail">New Email Address</label>
+                                    <input 
+                                        type="email" 
+                                        id="newEmail"
+                                        name="new_email"
+                                        placeholder="your.new@email.com"
+                                        required
+                                    >
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="emailPassword">Confirm with Password</label>
+                                    <input 
+                                        type="password" 
+                                        id="emailPassword"
+                                        name="password"
+                                        placeholder="Enter your password to confirm"
+                                        required
+                                    >
+                                    <small>We need your password to confirm this change</small>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Change Email</button>
+                            </form>
+                        </div>
+
+                        <button class="btn btn-secondary" onclick="closeModal('helpModal')" style="margin-top: 2rem;">Close</button>
                     </div>
                 </div>
 
                 <div style="margin-top: 3rem; background: rgba(99, 102, 241, 0.1); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border-color);">
-                    <h2 style="color: var(--primary-color); margin-bottom: 1rem;">Getting Started 🚀</h2>
+                    <h2 style="color: var(--primary-color); margin-bottom: 1rem;">What is this?</h2>
                     <ol style="color: var(--text-secondary); line-height: 2;">
-                        <li>Visit the <strong>My Albums</strong> page to start your collection</li>
-                        <li>Create albums and provide a comment</li>
-                        <li>Add songs to each album with 5-star ratings</li>
-                        <li>Leave comments on songs</li>
-                        <li>Sort and filter your collection by various criteria</li>
+                        <li>This is the account manager where you can manage your account settings.</li>
+                        <li>Change your password.</li>
+                        <li>Change your email.</li>
+                        <li>Demonstrate secure software architecture practices.</li>
+                        <li>Made in using Flask, HTML, CSS, and JavaScript with SQLite database.</li>
                     </ol>
                 </div>
             </div>

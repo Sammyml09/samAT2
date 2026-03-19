@@ -304,7 +304,7 @@ header {
    ======================================== */
 
 .main-container {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
@@ -693,6 +693,12 @@ header {
   background: rgba(245, 158, 11, 0.1);
   color: var(--warning-color);
   border: 1px solid var(--warning-color);
+}
+
+.alert-info {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
 }
 
 /* ========================================

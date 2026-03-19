@@ -5,32 +5,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
         <script src="{{ url_for('static', filename='/js/script.js') }}"></script>
-        <title>Music Diary</title>
+        <title>Secure Software</title>
     </head>
 
         <body>
         <header>
             <div class="header-container">
                 <div class="logo-section">
-                    <a href="index.html" class="logo">Music Diary</a>
+                    <a href="index.html" class="logo">Secure Software/a>
                 </div>
             </div>
         </header>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
 
         <main class="auth-container">
             <div class="auth-box">
                 <!-- Login Section -->
                 <div id="loginSection" class="auth-form-section active">
                     <h1>Welcome Back</h1>
-                    <p>Sign in to your Music Diary account</p>
+                    <p>Sign in to your Secure Account</p>
                     
                     <form id="loginForm">
                         <div class="form-group">
@@ -75,10 +67,14 @@
                                 type="text" 
                                 id="registerUsername"
                                 name="username"
-                                placeholder="3-30 characters (letters, numbers, - _)"
+                                placeholder="Letters only (A-Z, a-z)"
                                 required
                             >
-                            <small>3-30 characters, alphanumeric, hyphens, and underscores only</small>
+                            <small>3+ characters, letters only (A-Z, a-z)</small>
+                            <div id="usernameRequirements" style="margin-top: 0.5rem; font-size: 0.9rem;">
+                                <div id="user-length" style="color: var(--text-secondary);">✗ At least 3 characters</div>
+                                <div id="user-letters" style="color: var(--text-secondary);">✗ Letters only (A-Z, a-z)</div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -101,14 +97,21 @@
                                 placeholder="At least 8 characters"
                                 required
                             >
-                            <small>8-128 characters</small>
+                            <small>8+ characters, must include uppercase, lowercase, and numbers</small>
+                            <div id="passwordRequirements" style="margin-top: 0.5rem; font-size: 0.9rem;">
+                                <div id="req-length" style="color: var(--text-secondary);">✗ At least 8 characters</div>
+                                <div id="req-upper" style="color: var(--text-secondary);">✗ One uppercase letter</div>
+                                <div id="req-lower" style="color: var(--text-secondary);">✗ One lowercase letter</div>
+                                <div id="req-digit" style="color: var(--text-secondary);">✗ One number</div>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label for="registerPasswordConfirm">Confirm Password</label>
                             <input 
                                 type="password" 
-                                id="registerPasswordConfirm" 
+                                id="registerPasswordConfirm"
+                                name="confirm_password"
                                 placeholder="Re-enter your password"
                                 required
                             >
