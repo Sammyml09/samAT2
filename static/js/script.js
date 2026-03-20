@@ -1,3 +1,13 @@
+// Secure Software App - JS for index and main page
+// Author: Sam Lucas
+// Email: sam.lucas5@education.nsw.gov.au
+// Date: March 16, 2025
+//
+// Purpose: 
+// Client-side form validation, real-time requirement feedback, alert system,
+//  AJAX form submissions for authentication and account management
+//
+
 // Escape HTML to prevent XSS
 function escapeHtml(text) {
   const div = document.createElement('div');
@@ -41,6 +51,7 @@ function validateUsername(username) {
   return requirements;
 }
 
+// Live display of Username requirements
 function updateUsernameRequirements(requirements) {
   const userLength = document.getElementById('user-length');
   const userLetters = document.getElementById('user-letters');
@@ -67,6 +78,7 @@ function validatePassword(password) {
   return requirements;
 }
 
+// Live display of Password requirements
 function updatePasswordRequirements(requirements) {
   const reqLength = document.getElementById('req-length');
   const reqUpper = document.getElementById('req-upper');

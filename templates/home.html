@@ -1,3 +1,15 @@
+<!--
+Secure Software App - Main page with account settings
+Author: Sam Lucas
+Email: sam.lucas5@education.nsw.gov.au
+Date: March 16, 2025
+
+Purpose:
+Protected user dashboard with account settings modal for changing password and email
+
+-->
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -25,7 +37,8 @@
                 <p style="color: var(--text-secondary); margin-bottom: 2rem;">
                     Manage your account settings and preferences in one place.
                 </p>
-
+                
+                <!-- Account Settings -->
                 <div class="dashboard-grid">
                     <div class="dashboard-card" onclick="document.getElementById('helpModal').classList.add('active')" style="cursor: pointer;">
                         <div class="dashboard-card-icon">❓</div>
@@ -34,6 +47,7 @@
                     </div>
                 </div>
 
+                <!-- Modal for Account Settings -->
                 <div id="helpModal" class="modal">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -121,11 +135,13 @@
                                 <button type="submit" class="btn btn-primary">Change Email</button>
                             </form>
                         </div>
-
+                        
+                        <!-- Close Modal -->
                         <button class="btn btn-secondary" onclick="closeModal('helpModal')" style="margin-top: 2rem;">Close</button>
                     </div>
-                </div>
+                </div> 
 
+                <!-- Extra Info -->
                 <div style="margin-top: 3rem; background: rgba(99, 102, 241, 0.1); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border-color);">
                     <h2 style="color: var(--primary-color); margin-bottom: 1rem;">What is this?</h2>
                     <ol style="color: var(--text-secondary); line-height: 2;">

@@ -1,3 +1,13 @@
+# Secure Software App - Main Flask Code
+# Author: Sam Lucas
+# Email: sam.lucas5@education.nsw.gov.au
+# Date: March 16, 2025
+#
+# Purpose: 
+# Flask authentication system with secure user registration, login, password/email management,
+# and session handling with bcrypt hashing
+#
+
 from flask import Flask, redirect, render_template, request, session, jsonify
 from flask_bcrypt import Bcrypt
 from datetime import timedelta
@@ -7,34 +17,37 @@ import secrets
 import sqlite3
 import logging
 
-# ---- Setup ----
+# Setup 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
-app.permanent_session_lifetime = timedelta(minutes=30)
+app.permanent_session_lifetime = timedelta(minutes=20)
 load_dotenv()
 
-# ---- Configure Logging ----
+# Configure Logging 
 logging.basicConfig(
     filename="security.log",
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-# ---- Session Security ----
+# Session Security 
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
     SESSION_COOKIE_SECURE=True  # True in production
 )
 
+
 bcrypt = Bcrypt(app)
 
 
+# Refresh session 
 @app.before_request
 def before_request():
     session.permanent = True
 
 
+# Create database
 def get_db_connection():
     """Create database connection"""
     connection = sqlite3.connect("app.db")
@@ -42,6 +55,7 @@ def get_db_connection():
     return connection
 
 
+# Validate Password 
 def validate_password(password):
 
     if len(password) < 8:
@@ -55,6 +69,7 @@ def validate_password(password):
     return True, "Password is valid"
 
 
+# Validate Username
 def validate_username(username):
     """
     Validate username meets requirements:
@@ -68,13 +83,13 @@ def validate_username(username):
     return True, "Username is valid"
 
 
-# ---- Routes: Authentication ----
-
+# Route to index.html
 @app.route("/")
 def home():
     return render_template("index.html")
 
 
+# Route to main, checking for user_id
 @app.route("/home")
 def home_dashboard():
     if "user_id" not in session:
@@ -82,6 +97,7 @@ def home_dashboard():
     return render_template("home.html")
 
 
+# Manage regestration, access to DB
 @app.route("/api/register", methods=["POST"])
 def register():
     username = request.form.get("username", "").strip()
@@ -99,9 +115,11 @@ def register():
     if not is_valid:
         return redirect("/")
     
+    # Checking to see if its the same
     if password != confirm_password:
         return redirect("/")
     
+    # Check for @
     if "@" not in email or "." not in email:
         return redirect("/")
     
@@ -130,7 +148,7 @@ def register():
         logging.error(f"Registration error: {e}")
         return redirect("/")
 
-
+# Login check
 @app.route("/api/login", methods=["POST"])
 def login():
     username = request.form.get("username", "").strip()
@@ -157,6 +175,7 @@ def login():
         return redirect("/")
 
 
+# Clear session with logout
 @app.route("/api/logout", methods=["GET", "POST"])
 def logout():
     if "user_id" in session:
@@ -165,6 +184,7 @@ def logout():
     return redirect("/")
 
 
+#Change password route, JSON to AJAX 
 @app.route("/api/change-password", methods=["POST"])
 def change_password():
     """Change user password"""
@@ -224,9 +244,10 @@ def change_password():
         return jsonify({"success": False, "message": "An error occurred while changing password"}), 500
 
 
+# Change email route, same JSON to AJAX
 @app.route("/api/change-email", methods=["POST"])
 def change_email():
-    """Change user email"""
+
     if "user_id" not in session:
         return jsonify({"success": False, "message": "Please log in first"}), 401
     
@@ -277,11 +298,10 @@ def change_email():
         return jsonify({"success": False, "message": "An error occurred while changing email"}), 500
 
 
-# ---- Database Setup ----
-
+# Database Setup
 @app.route("/setup-db")
 def setup_db():
-    """Initialize database"""
+    
     connection = get_db_connection()
     cursor = connection.cursor()
     
@@ -299,9 +319,12 @@ def setup_db():
     return "Database setup complete"
 
 
+
+
+# Sample data to be added to database for testing purposes
 @app.route("/add-sample")
 def add_sample():
-    """Add sample users"""
+
     connection = get_db_connection()
     cursor = connection.cursor()
     
