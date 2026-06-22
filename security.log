@@ -22,3 +22,56 @@
 2026-06-22 23:02:56,938 - INFO - 127.0.0.1 - - [22/Jun/2026 23:02:56] "[31m[1mPOST /api/register HTTP/1.1[0m" 400 -
 2026-06-22 23:04:26,396 - INFO - 127.0.0.1 - - [22/Jun/2026 23:04:26] "[31m[1mPOST /api/login HTTP/1.1[0m" 400 -
 2026-06-22 23:04:33,430 - INFO - 127.0.0.1 - - [22/Jun/2026 23:04:33] "[31m[1mPOST /api/register HTTP/1.1[0m" 400 -
+2026-06-23 00:27:05,694 - INFO - Database initialized
+2026-06-23 00:28:12,343 - INFO - Database initialized
+2026-06-23 00:28:12,346 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-23 00:28:12,346 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-23 00:28:23,654 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:23] "GET / HTTP/1.1" 200 -
+2026-06-23 00:28:23,704 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:23] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:28:23,705 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:23] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:28:23,712 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:23] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:28:23,712 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:23] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:28:23,727 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:23] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-06-23 00:28:33,574 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:33] "GET / HTTP/1.1" 200 -
+2026-06-23 00:28:33,596 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:33] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:28:33,597 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:33] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:28:33,621 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:33] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:28:33,621 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:33] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:28:37,670 - INFO - Login attempt: 'zammy'
+2026-06-23 00:28:37,671 - WARNING - Login failed: 'zammy'
+2026-06-23 00:28:37,671 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:37] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-06-23 00:28:37,674 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:37] "GET / HTTP/1.1" 200 -
+2026-06-23 00:28:37,686 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:37] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:28:37,687 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:37] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:28:37,695 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:37] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:28:37,695 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:37] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:28:50,724 - INFO - Login attempt: 'zammy'
+2026-06-23 00:28:50,725 - WARNING - Login failed: 'zammy'
+2026-06-23 00:28:50,725 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:50] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-06-23 00:28:50,728 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:50] "GET / HTTP/1.1" 200 -
+2026-06-23 00:28:50,742 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:50] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:28:50,743 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:50] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:28:50,749 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:50] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:28:50,750 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:50] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:28:55,408 - INFO - Login attempt: 'zammy'
+2026-06-23 00:28:55,410 - WARNING - Login failed: 'zammy'
+2026-06-23 00:28:55,410 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:55] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-06-23 00:28:55,413 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:55] "GET / HTTP/1.1" 200 -
+2026-06-23 00:28:55,428 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:55] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:28:55,429 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:55] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:28:55,443 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:55] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:28:55,443 - INFO - 127.0.0.1 - - [23/Jun/2026 00:28:55] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:29:23,508 - INFO - User registered: 'china'
+2026-06-23 00:29:23,509 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:23] "[32mPOST /api/register HTTP/1.1[0m" 302 -
+2026-06-23 00:29:23,514 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:23] "GET /home HTTP/1.1" 200 -
+2026-06-23 00:29:23,532 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:23] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:29:23,532 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:23] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:29:23,546 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:23] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:29:23,546 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:23] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:29:41,293 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:41] "[31m[1mPOST /api/change-password HTTP/1.1[0m" 400 -
+2026-06-23 00:29:45,759 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:45] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:29:45,763 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:45] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-23 00:29:45,785 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:45] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:29:49,428 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:49] "[31m[1mGET /api/change-password HTTP/1.1[0m" 405 -
+2026-06-23 00:31:10,872 - INFO - 127.0.0.1 - - [23/Jun/2026 00:31:10] "[31m[1mPOST /api/change-password HTTP/1.1[0m" 400 -

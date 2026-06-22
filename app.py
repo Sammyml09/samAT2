@@ -148,6 +148,13 @@ def home_dashboard():
     return render_template("home.html")
 
 
+@app.route("/albums")
+def albums_page():
+    if "user_id" not in session:
+        return redirect("/")
+    return render_template("albums.html")
+
+
 @app.route("/api/register", methods=["POST"])
 def register():
     # Prefer form submissions (browser) but accept JSON for API clients
