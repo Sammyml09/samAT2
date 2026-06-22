@@ -276,11 +276,11 @@ function escapeHtml(text) {
 // Show error message
 function showError(message) {
     console.error('Error:', message);
-    alert('Error: ' + message);
+    showAlert(message, 'error');
 }
 
 // Show success message
 function showSuccess(message) {
     console.log('Success:', message);
-    alert(message);
+    showAlert(message, 'success');
 }

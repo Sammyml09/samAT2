@@ -232,7 +232,7 @@
             const songComment = document.getElementById('songComment').value.trim();
 
             if (!songName || !songRating) {
-                alert('Please fill in all required fields');
+                showAlert('Please fill in all required fields', 'error');
                 return;
             }
 
@@ -249,19 +249,19 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Song added successfully!');
+                        showAlert('Song added successfully!', 'success');
                         // Reset form and reload
                         document.getElementById('addSongForm').reset();
                         document.getElementById('addSongForm').style.display = 'none';
                         document.getElementById('toggleSongFormBtn').textContent = '+ Add Song';
                         loadAlbumDetail(albumId);
                     } else {
-                        alert('Error: ' + (data.message || 'Failed to add song'));
+                        showAlert(data.message || 'Failed to add song', 'error');
                     }
                 })
                 .catch(error => {
                     console.error('Error adding song:', error);
-                    alert('Error adding song: ' + error.message);
+                    showAlert('Error adding song: ' + error.message, 'error');
                 });
         }
 
@@ -275,15 +275,15 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Song deleted successfully!');
+                        showAlert('Song deleted successfully!', 'success');
                         loadAlbumDetail(window.currentAlbumId);
                     } else {
-                        alert('Error: ' + (data.message || 'Failed to delete song'));
+                        showAlert(data.message || 'Failed to delete song', 'error');
                     }
                 })
                 .catch(error => {
                     console.error('Error deleting song:', error);
-                    alert('Error deleting song: ' + error.message);
+                    showAlert('Error deleting song: ' + error.message, 'error');
                 });
         }
 
@@ -303,15 +303,15 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Album updated!');
+                        showAlert('Album updated!', 'success');
                         loadAlbumDetail(albumId);
                     } else {
-                        alert('Error: ' + (data.message || 'Failed to update album'));
+                        showAlert(data.message || 'Failed to update album', 'error');
                     }
                 })
                 .catch(error => {
                     console.error('Error updating album:', error);
-                    alert('Error updating album: ' + error.message);
+                    showAlert('Error updating album: ' + error.message, 'error');
                 });
         }
 
@@ -324,15 +324,15 @@
                     .then(res => res.json())
                     .then(data => {
                         if (data.success) {
-                            alert('Album deleted successfully!');
+                            showAlert('Album deleted successfully!', 'success');
                             window.location.href = '/albums';
                         } else {
-                            alert('Error: ' + (data.message || 'Failed to delete album'));
+                            showAlert(data.message || 'Failed to delete album', 'error');
                         }
                     })
                     .catch(error => {
                         console.error('Error deleting album:', error);
-                        alert('Error deleting album: ' + error.message);
+                        showAlert('Error deleting album: ' + error.message, 'error');
                     });
             }
         }
