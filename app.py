@@ -17,6 +17,7 @@ import secrets
 import sqlite3
 import logging
 import uuid
+import urllib.parse
 
 # Setup
 app = Flask(__name__)
@@ -149,7 +150,25 @@ def home_dashboard():
 
 @app.route("/api/register", methods=["POST"])
 def register():
-    payload = request.get_json(silent=True) or {}
+    # Accept both JSON and traditional form submissions (browsers may POST form data)
+    payload = request.get_json(silent=True)
+    if not payload:
+        # request.get_json returns None when there's no JSON body
+        payload = request.form.to_dict() if request.form else {}
+
+    def respond(success, message, data=None, status=200):
+        # Return JSON for API/XHR calls, otherwise redirect back to UI
+        if request.is_json or request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return json_response(success, message, data, status)
+        else:
+            encoded = urllib.parse.quote_plus(message)
+            if success:
+                # On success redirect to dashboard
+                session["user_id"] = data.get("userID") if data else session.get("user_id")
+                return redirect("/home")
+            else:
+                # On failure redirect back to signup page with error in query string
+                return redirect(f"/?error={encoded}")
 
     username = payload.get("username", "")
     email = payload.get("email", "")
@@ -157,7 +176,7 @@ def register():
     confirm_password = payload.get("confirm_password", "")
 
     if not isinstance(username, str) or not isinstance(email, str) or not isinstance(password, str) or not isinstance(confirm_password, str):
-        return json_response(False, "All fields must be strings", None, 400)
+        return respond(False, "All fields must be strings", None, 400)
 
     username = username.strip()
     email = email.strip()
@@ -165,21 +184,21 @@ def register():
     confirm_password = confirm_password.strip()
 
     if not username or not email or not password or not confirm_password:
-        return json_response(False, "All fields are required", None, 400)
+        return respond(False, "All fields are required", None, 400)
 
     is_valid, message = validate_username(username)
     if not is_valid:
-        return json_response(False, message, None, 400)
+        return respond(False, message, None, 400)
 
     is_valid, message = validate_password(password)
     if not is_valid:
-        return json_response(False, message, None, 400)
+        return respond(False, message, None, 400)
 
     if password != confirm_password:
-        return json_response(False, "Passwords do not match", None, 400)
+        return respond(False, "Passwords do not match", None, 400)
 
     if "@" not in email or "." not in email:
-        return json_response(False, "Invalid email format", None, 400)
+        return respond(False, "Invalid email format", None, 400)
 
     hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
 
@@ -194,15 +213,14 @@ def register():
         user_id = cursor.lastrowid
         connection.close()
 
-        session["user_id"] = str(user_id)
         logging.info(f"User registered: {repr(username)}")
-        return json_response(True, "Registration successful", {"userID": str(user_id)}, 201)
+        return respond(True, "Registration successful", {"userID": str(user_id)}, 201)
     except sqlite3.IntegrityError:
         logging.warning(f"Registration failed - duplicate: {repr(username)}")
-        return json_response(False, "Username or email already exists", None, 400)
+        return respond(False, "Username or email already exists", None, 400)
     except Exception as e:
         logging.error(f"Registration error: {e}")
-        return json_response(False, "An error occurred during registration", None, 500)
+        return respond(False, "An error occurred during registration", None, 500)
 
 
 @app.route("/api/login", methods=["POST"])
