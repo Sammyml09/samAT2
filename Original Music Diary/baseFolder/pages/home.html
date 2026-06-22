@@ -1,0 +1,122 @@
+<!--
+###############################################################################
+# Music Diary PWA - Home/Dashboard Page
+#
+# Author: Sam Lucas
+# Email: sam.lucas5@education.nsw.gov.au
+# Date: December 6, 2025
+#
+# Purpose: Dashboard and welcome page for authenticated users with
+# navigation to main features and help documentation
+#
+###############################################################################
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="description" content="Music Diary - Your personal music collection">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Music Diary">
+    <link rel="manifest" href="../manifest.json">
+    <title>Music Diary - Home</title>
+    <link rel="stylesheet" href="../styles/myStyle.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="home.html" class="logo">Music Diary</a>
+            </div>
+            <nav>
+                <a href="home.html">Home</a>
+                <a href="albums.html">Albums</a>
+                <button id="logoutBtn" style="cursor: pointer;">Logout</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="container">
+            <h1 class="page-title">Welcome to Music Diary! 🎵</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                Track, rate, and organize your favorite albums and songs in one place.
+            </p>
+
+            <div class="dashboard-grid">
+                <a href="albums.html" style="text-decoration: none;">
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-icon">📚</div>
+                        <h3>My Albums</h3>
+                        <p>Browse and manage your music collection</p>
+                    </div>
+                </a>
+
+                <div class="dashboard-card" onclick="document.getElementById('helpModal').classList.add('active')" style="cursor: pointer;">
+                    <div class="dashboard-card-icon">❓</div>
+                    <h3>Help & Guide</h3>
+                    <p>Learn how to use Music Diary</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; background: rgba(99, 102, 241, 0.1); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border-color);">
+                <h2 style="color: var(--primary-color); margin-bottom: 1rem;">Getting Started 🚀</h2>
+                <ol style="color: var(--text-secondary); line-height: 2;">
+                    <li>Visit the <strong>My Albums</strong> page to start your collection</li>
+                    <li>Create albums and provide a comment</li>
+                    <li>Add songs to each album with 5-star ratings</li>
+                    <li>Leave comments on songs</li>
+                    <li>Sort and filter your collection by various criteria</li>
+                </ol>
+            </div>
+        </div>
+    </main>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Help & Guide</h2>
+                <button class="modal-close" onclick="closeModal('helpModal')">×</button>
+            </div>
+            
+            <h3 style="color: var(--primary-color); margin-top: 1.5rem;">Features</h3>
+            <ul style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                <li>📚 <strong>Album Management:</strong> Add, edit, and delete albums with artist and year information</li>
+                <li>🎵 <strong>Song Tracking:</strong> Add unlimited songs to each album with ratings and comments</li>
+                <li>⭐ <strong>5-Star Ratings:</strong> Rate each song individually to track your favorites</li>
+                <li>🔍 <strong>Filter & Sort:</strong> Find albums by artist, year, or name</li>
+                <li>💾 <strong>Auto-Save:</strong> Your data is automatically saved to your device</li>
+            </ul>
+
+            <h3 style="color: var(--primary-color);">Tips</h3>
+            <ul style="color: var(--text-secondary);">
+                <li>Use meaningful album titles for easy searching</li>
+                <li>Leave comments to remember your thoughts about songs</li>
+                <li>Sort by rating to quickly find your favorite albums</li>
+                <li>Your data is stored locally on your device</li>
+            </ul>
+
+            <button class="btn btn-primary" onclick="closeModal('helpModal')" style="margin-top: 1.5rem;">Got it!</button>
+        </div>
+    </div>
+
+    <script src="../scripts/myScripts.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {     // Checks is service workers are supported
+            window.addEventListener('DOMContentLoaded', () => {
+                navigator.serviceWorker.register('../sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

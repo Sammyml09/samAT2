@@ -1,0 +1,158 @@
+<!--
+###############################################################################
+# Music Diary PWA - Album Collection Management
+#
+# Author: Sam Lucas
+# Email: sam.lucas5@education.nsw.gov.au
+# Date: December 6, 2025
+#
+# Purpose: Album collection management and discovery page with filtering
+# and sorting capabilities
+#
+###############################################################################
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="description" content="Music Diary - Album Collection">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="../manifest.json">
+    <title>Music Diary - Albums</title>
+    <link rel="stylesheet" href="../styles/myStyle.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="home.html" class="logo">Music Diary</a>
+            </div>
+            <nav>
+                <a href="home.html">Home</a>
+                <a href="albums.html">Albums</a>
+                <button id="logoutBtn" style="cursor: pointer;">Logout</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+                <h1 class="page-title">My Albums 📚</h1>
+                <button id="addAlbumBtn" class="btn btn-primary" style="width: auto; padding: 0.75rem 1.5rem;">+ Add Album</button>
+            </div>
+
+            <!-- Filter & Sort Section -->
+            <div class="filter-bar">
+                <select id="filterType">
+                    <option value="">Select Filter Type</option>
+                    <option value="artist">Filter by Artist</option>
+                    <option value="name">Filter by Album Name</option>
+                    <option value="year">Filter by Year</option>
+                </select>
+                
+                <input 
+                    type="text" 
+                    id="filterValue" 
+                    placeholder="Enter value to filter..."
+                >
+                
+                <button id="filterBtn" style="width: auto;">🔍 Filter</button>
+            </div>
+
+            <div class="filter-bar" style="background: rgba(139, 92, 246, 0.05);">
+                <select id="sortType">
+                    <option value="">Select Sort Option</option>
+                    <option value="name-asc">Album Name (A-Z)</option>
+                    <option value="name-desc">Album Name (Z-A)</option>
+                    <option value="artist">Artist Name</option>
+                    <option value="year-newest">Year (Newest First)</option>
+                    <option value="year-oldest">Year (Oldest First)</option>
+                    <option value="rating">Average Rating (Highest First)</option>
+                </select>
+                
+                <button id="sortBtn" style="width: auto;">↕️ Sort</button>
+            </div>
+
+            <!-- Albums Grid -->
+            <div id="albumsGrid" class="grid-container">
+                <!-- Albums will be rendered here by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Album Modal -->
+    <div id="addAlbumModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Album</h2>
+                <button class="modal-close" onclick="closeModal('addAlbumModal')">×</button>
+            </div>
+
+            <form id="addAlbumForm" onsubmit="handleAddAlbum(event)">
+                <div class="form-group">
+                    <label for="albumName">Album Title *</label>
+                    <input 
+                        type="text" 
+                        id="albumName" 
+                        placeholder="Enter album title"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="artistName">Artist Name *</label>
+                    <input 
+                        type="text" 
+                        id="artistName" 
+                        placeholder="Enter artist name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="releaseYear">Release Year</label>
+                    <input 
+                        type="number" 
+                        id="releaseYear" 
+                        placeholder="e.g., 2024"
+                        min="1900"
+                        max="2099"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="albumComment">Album Comment</label>
+                    <textarea 
+                        id="albumComment" 
+                        placeholder="Add your thoughts about this album..."
+                        rows="4"
+                        style="resize: vertical;"
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create Album</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../scripts/myScripts.js"></script>
+    <script>
+        // Register service worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('../sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+2026-03-20 14:03:29,231 - INFO - Database initialized
+2026-03-20 14:03:29,235 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-20 14:03:29,235 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-20 14:03:37,448 - INFO - 127.0.0.1 - - [20/Mar/2026 14:03:37] "GET / HTTP/1.1" 200 -
+2026-03-20 14:03:37,464 - INFO - 127.0.0.1 - - [20/Mar/2026 14:03:37] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-03-20 14:03:37,469 - INFO - 127.0.0.1 - - [20/Mar/2026 14:03:37] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-03-20 14:03:37,502 - INFO - 127.0.0.1 - - [20/Mar/2026 14:03:37] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-03-20 14:03:37,503 - INFO - 127.0.0.1 - - [20/Mar/2026 14:03:37] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-03-20 14:04:01,950 - INFO - User registered: 'Test'
+2026-03-20 14:04:01,950 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:01] "[32mPOST /api/register HTTP/1.1[0m" 302 -
+2026-03-20 14:04:01,955 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:01] "GET /home HTTP/1.1" 200 -
+2026-03-20 14:04:01,975 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:01] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-03-20 14:04:01,976 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:01] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-03-20 14:04:01,995 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:01] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-20 14:04:01,997 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:01] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-03-20 14:04:06,996 - INFO - User logged out: 1
+2026-03-20 14:04:06,997 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:06] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-03-20 14:04:07,004 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:07] "GET / HTTP/1.1" 200 -
+2026-03-20 14:04:07,023 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:07] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-03-20 14:04:07,023 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:07] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-03-20 14:04:07,041 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:07] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-03-20 14:04:07,041 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:07] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-20 14:04:14,729 - INFO - Login attempt: 'Test'
+2026-03-20 14:04:14,924 - INFO - Login successful: 'Test'
+2026-03-20 14:04:14,925 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:14] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-03-20 14:04:14,928 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:14] "GET /home HTTP/1.1" 200 -
+2026-03-20 14:04:14,949 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:14] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-03-20 14:04:14,951 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:14] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-03-20 14:04:14,969 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:14] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-03-20 14:04:14,969 - INFO - 127.0.0.1 - - [20/Mar/2026 14:04:14] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
