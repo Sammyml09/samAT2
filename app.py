@@ -150,15 +150,16 @@ def home_dashboard():
 
 @app.route("/api/register", methods=["POST"])
 def register():
-    # Accept both JSON and traditional form submissions (browsers may POST form data)
-    payload = request.get_json(silent=True)
-    if not payload:
-        # request.get_json returns None when there's no JSON body
-        payload = request.form.to_dict() if request.form else {}
+    # Prefer form submissions (browser) but accept JSON for API clients
+    if request.form:
+        payload = request.form.to_dict()
+        is_api = False
+    else:
+        payload = request.get_json(silent=True) or {}
+        is_api = request.headers.get('Content-Type', '').lower().startswith('application/json') or request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
     def respond(success, message, data=None, status=200):
-        # Return JSON for API/XHR calls, otherwise redirect back to UI
-        if request.is_json or request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        if is_api:
             return json_response(success, message, data, status)
         else:
             encoded = urllib.parse.quote_plus(message)
@@ -225,19 +226,28 @@ def register():
 
 @app.route("/api/login", methods=["POST"])
 def login():
-    payload = request.get_json(silent=True) or {}
-
-    username = payload.get("username", "")
-    password = payload.get("password", "")
+    # Support both form submissions and JSON API calls
+    if request.form:
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+        is_api = False
+    else:
+        payload = request.get_json(silent=True) or {}
+        username = payload.get("username", "").strip()
+        password = payload.get("password", "").strip()
+        is_api = request.headers.get('Content-Type', '').lower().startswith('application/json') or request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
     if not isinstance(username, str) or not isinstance(password, str):
-        return json_response(False, "Username and password must be strings", None, 400)
-
-    username = username.strip()
-    password = password.strip()
+        if is_api:
+            return json_response(False, "Username and password must be strings", None, 400)
+        else:
+            return redirect("/")
 
     if not username or not password:
-        return json_response(False, "Username and password are required", None, 400)
+        if is_api:
+            return json_response(False, "Username and password are required", None, 400)
+        else:
+            return redirect("/")
 
     logging.info(f"Login attempt: {repr(username)}")
 
@@ -251,13 +261,22 @@ def login():
         if user and bcrypt.check_password_hash(user["password"], password):
             session["user_id"] = str(user["userID"])
             logging.info(f"Login successful: {repr(username)}")
-            return json_response(True, "Login successful", {"userID": str(user["userID"]), "username": user["username"]}, 200)
+            if is_api:
+                return json_response(True, "Login successful", {"userID": str(user["userID"]), "username": user["username"]}, 200)
+            else:
+                return redirect("/home")
 
         logging.warning(f"Login failed: {repr(username)}")
-        return json_response(False, "Invalid username or password", None, 401)
+        if is_api:
+            return json_response(False, "Invalid username or password", None, 401)
+        else:
+            return redirect("/")
     except Exception as e:
         logging.error(f"Login error: {e}")
-        return json_response(False, "An error occurred during login", None, 500)
+        if is_api:
+            return json_response(False, "An error occurred during login", None, 500)
+        else:
+            return redirect("/")
 
 
 @app.route("/api/logout", methods=["GET", "POST"])
