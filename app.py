@@ -21,7 +21,7 @@ import urllib.parse
 
 # Setup
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(16))
+app.secret_key = os.environ.get("SECRET_KEY") or "dev-secret-key-change-in-production"
 app.permanent_session_lifetime = timedelta(minutes=20)
 load_dotenv()
 
@@ -69,7 +69,8 @@ def init_db():
             title TEXT NOT NULL,
             artist TEXT,
             year INTEGER,
-            user_id TEXT NOT NULL,
+            comment TEXT,
+            user_id INTEGER NOT NULL,
             FOREIGN KEY(user_id) REFERENCES users(userID)
         )
     """)
@@ -79,9 +80,9 @@ def init_db():
             songID TEXT PRIMARY KEY,
             albumID TEXT NOT NULL,
             title TEXT NOT NULL,
-            track INTEGER,
-            length INTEGER,
-            user_id TEXT NOT NULL,
+            rating INTEGER DEFAULT 0,
+            comment TEXT,
+            user_id INTEGER NOT NULL,
             FOREIGN KEY(albumID) REFERENCES albums(albumID),
             FOREIGN KEY(user_id) REFERENCES users(userID)
         )
@@ -133,7 +134,7 @@ def require_login():
     user_id = session.get("user_id")
     if user_id is None:
         return None, json_response(False, "Authentication required", None, 401)
-    return str(user_id), None
+    return user_id, None
 
 
 @app.route("/")
@@ -155,6 +156,13 @@ def albums_page():
     return render_template("albums.html")
 
 
+@app.route("/album-detail")
+def album_detail_page():
+    if "user_id" not in session:
+        return redirect("/")
+    return render_template("album-detail.html")
+
+
 @app.route("/api/register", methods=["POST"])
 def register():
     # Prefer form submissions (browser) but accept JSON for API clients
@@ -166,13 +174,17 @@ def register():
         is_api = request.headers.get('Content-Type', '').lower().startswith('application/json') or request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
     def respond(success, message, data=None, status=200):
+        if success and data and "userID" in data:
+            # Always set session on successful registration/login
+            session["user_id"] = int(data.get("userID"))
+            session.permanent = True
+        
         if is_api:
             return json_response(success, message, data, status)
         else:
             encoded = urllib.parse.quote_plus(message)
             if success:
                 # On success redirect to dashboard
-                session["user_id"] = data.get("userID") if data else session.get("user_id")
                 return redirect("/home")
             else:
                 # On failure redirect back to signup page with error in query string
@@ -266,7 +278,8 @@ def login():
         connection.close()
 
         if user and bcrypt.check_password_hash(user["password"], password):
-            session["user_id"] = str(user["userID"])
+            session["user_id"] = int(user["userID"])
+            session.permanent = True
             logging.info(f"Login successful: {repr(username)}")
             if is_api:
                 return json_response(True, "Login successful", {"userID": str(user["userID"]), "username": user["username"]}, 200)
@@ -432,6 +445,7 @@ def create_album():
     title = payload.get("title", "")
     artist = payload.get("artist")
     year = payload.get("year")
+    comment = payload.get("comment", "")
 
     if not isinstance(title, str):
         return json_response(False, "Album title is required", None, 400)
@@ -450,8 +464,8 @@ def create_album():
     connection = get_db_connection()
     cursor = connection.cursor()
     cursor.execute(
-        "INSERT INTO albums (albumID, title, artist, year, user_id) VALUES (?, ?, ?, ?, ?)",
-        (album_id, title, artist, year, user_id)
+        "INSERT INTO albums (albumID, title, artist, year, comment, user_id) VALUES (?, ?, ?, ?, ?, ?)",
+        (album_id, title, artist, year, comment, user_id)
     )
     connection.commit()
     connection.close()
@@ -461,6 +475,7 @@ def create_album():
         "title": title,
         "artist": artist,
         "year": year,
+        "comment": comment,
         "user_id": user_id
     }}, 201)
 
@@ -588,7 +603,7 @@ def list_album_songs(album_id):
         connection.close()
         return json_response(False, "Forbidden", None, 403)
 
-    cursor.execute("SELECT * FROM songs WHERE albumID = ? AND user_id = ? ORDER BY track, title", (album_id, user_id))
+    cursor.execute("SELECT * FROM songs WHERE albumID = ? AND user_id = ? ORDER BY title", (album_id, user_id))
     songs = [dict(row) for row in cursor.fetchall()]
     connection.close()
     return json_response(True, "Songs retrieved", {"songs": songs}, 200)
@@ -613,8 +628,8 @@ def create_song(album_id):
 
     payload = request.get_json(silent=True) or {}
     title = payload.get("title", "")
-    track = payload.get("track")
-    length = payload.get("length")
+    rating = payload.get("rating")
+    comment = payload.get("comment", "")
 
     if not isinstance(title, str):
         connection.close()
@@ -625,18 +640,14 @@ def create_song(album_id):
         connection.close()
         return json_response(False, "Song title is required", None, 400)
 
-    if track is not None and (not isinstance(track, int) or isinstance(track, bool)):
+    if rating is not None and (not isinstance(rating, int) or rating < 0 or rating > 5):
         connection.close()
-        return json_response(False, "Track must be an integer", None, 400)
-
-    if length is not None and (not isinstance(length, int) or isinstance(length, bool)):
-        connection.close()
-        return json_response(False, "Length must be an integer", None, 400)
+        return json_response(False, "Rating must be between 0 and 5", None, 400)
 
     song_id = str(uuid.uuid4())
     cursor.execute(
-        "INSERT INTO songs (songID, albumID, title, track, length, user_id) VALUES (?, ?, ?, ?, ?, ?)",
-        (song_id, album_id, title, track, length, user_id)
+        "INSERT INTO songs (songID, albumID, title, rating, comment, user_id) VALUES (?, ?, ?, ?, ?, ?)",
+        (song_id, album_id, title, rating or 0, comment, user_id)
     )
     connection.commit()
     connection.close()
@@ -645,8 +656,8 @@ def create_song(album_id):
         "songID": song_id,
         "albumID": album_id,
         "title": title,
-        "track": track,
-        "length": length,
+        "rating": rating or 0,
+        "comment": comment,
         "user_id": user_id
     }}, 201)
 
@@ -786,4 +797,4 @@ init_db()
 
 if __name__ == "__main__":
     logging.info("Flask application started")
-    app.run(debug=os.getenv("FLASK_DEBUG", "False").lower() == "true")
+    app.run(debug=os.getenv("FLASK_DEBUG", "False").lower() == "true", port=5002)

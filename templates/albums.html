@@ -1,32 +1,39 @@
 <!--
-Secure Software App - Album Management Page
-Author: Sam Lucas
-Email: sam.lucas5@education.nsw.gov.au
-Date: March 16, 2025
-
-Purpose:
-Album collection management with creation, filtering, and sorting
+###############################################################################
+# Music Diary PWA - Album Collection Management
+#
+# Author: Sam Lucas
+# Email: sam.lucas5@education.nsw.gov.au
+# Date: December 6, 2025
+#
+# Purpose: Album collection management and discovery page with filtering
+# and sorting capabilities
+#
+###############################################################################
 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
-    <title>Albums - Secure Software</title>
+    <meta name="theme-color" content="#6366f1">
+    <meta name="description" content="Music Diary - Album Collection">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <title>Music Diary - Albums</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <header>
         <div class="header-container">
             <div class="logo-section">
-                <a href="/home" class="logo">Secure Software</a>
+                <a href="/home" class="logo">Music Diary</a>
             </div>
             <nav>
                 <a href="/home">Home</a>
                 <a href="/albums">Albums</a>
-                <button id="logoutBtn" class="btn btn-secondary" style="cursor: pointer;">Logout</button>
-                <button id="settingsBtn" class="btn btn-secondary" style="cursor: pointer;">⚙️ Settings</button>
+                <button id="logoutBtn" style="cursor: pointer;">Logout</button>
             </nav>
         </div>
     </header>
@@ -37,8 +44,6 @@ Album collection management with creation, filtering, and sorting
                 <h1 class="page-title">My Albums 📚</h1>
                 <button id="addAlbumBtn" class="btn btn-primary" style="width: auto; padding: 0.75rem 1.5rem;">+ Add Album</button>
             </div>
-
-            <p id="status-message" style="color: var(--text-secondary); margin-bottom: 1rem;"></p>
 
             <!-- Filter & Sort Section -->
             <div class="filter-bar">
@@ -74,7 +79,6 @@ Album collection management with creation, filtering, and sorting
             <!-- Albums Grid -->
             <div id="albumsGrid" class="grid-container">
                 <!-- Albums will be rendered here by JavaScript -->
-                <p>No albums yet. Click "+ Add Album" to create one!</p>
             </div>
         </div>
     </main>
@@ -87,12 +91,12 @@ Album collection management with creation, filtering, and sorting
                 <button class="modal-close" onclick="closeModal('addAlbumModal')">×</button>
             </div>
 
-            <form id="addAlbumForm">
+            <form id="addAlbumForm" onsubmit="handleAddAlbum(event)">
                 <div class="form-group">
-                    <label for="albumTitle">Album Title *</label>
+                    <label for="albumName">Album Title *</label>
                     <input 
                         type="text" 
-                        id="albumTitle" 
+                        id="albumName" 
                         placeholder="Enter album title"
                         required
                     >
@@ -119,374 +123,35 @@ Album collection management with creation, filtering, and sorting
                     >
                 </div>
 
+                <div class="form-group">
+                    <label for="albumComment">Album Comment</label>
+                    <textarea 
+                        id="albumComment" 
+                        placeholder="Add your thoughts about this album..."
+                        rows="4"
+                        style="resize: vertical;"
+                    ></textarea>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Create Album</button>
             </form>
         </div>
     </div>
 
-    <!-- Account Settings Modal -->
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Account Settings</h2>
-                <button class="modal-close" onclick="closeModal('settingsModal')">×</button>
-            </div>
-        
-            <!-- Change Password Section -->
-            <div style="margin-top: 2rem;">
-                <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;">Change Password</h3>
-                <form id="changePasswordForm">
-                    <div class="form-group">
-                        <label for="oldPassword">Current Password</label>
-                        <input 
-                            type="password" 
-                            id="oldPassword"
-                            name="old_password"
-                            placeholder="Enter your current password"
-                            required
-                        >
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="newPassword">New Password</label>
-                        <input 
-                            type="password" 
-                            id="newPassword"
-                            name="new_password"
-                            placeholder="At least 8 characters with uppercase, lowercase, and numbers"
-                            required
-                        >
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="confirmNewPassword">Confirm New Password</label>
-                        <input 
-                            type="password" 
-                            id="confirmNewPassword"
-                            name="confirm_password"
-                            placeholder="Re-enter your new password"
-                            required
-                        >
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">Change Password</button>
-                </form>
-            </div>
-
-            <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2rem 0;">
-
-            <!-- Change Email Section -->
-            <div style="margin-top: 2rem;">
-                <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;">Change Email</h3>
-                <form id="changeEmailForm">
-                    <div class="form-group">
-                        <label for="newEmail">New Email Address</label>
-                        <input 
-                            type="email" 
-                            id="newEmail"
-                            name="new_email"
-                            placeholder="your.new@email.com"
-                            required
-                        >
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="emailPassword">Confirm with Password</label>
-                        <input 
-                            type="password" 
-                            id="emailPassword"
-                            name="password"
-                            placeholder="Enter your password to confirm"
-                            required
-                        >
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">Change Email</button>
-                </form>
-            </div>
-            
-            <button class="btn btn-secondary" onclick="closeModal('settingsModal')" style="margin-top: 2rem;">Close</button>
-        </div>
-    </div>
-
-    <script src="{{ url_for('static', filename='/js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/albumScripts.js') }}"></script>
     <script>
-        const API_BASE = '/api';
-        let state = { albums: [], filteredAlbums: [] };
-
-        // Close modal
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        // Show status message
-        function showStatus(message, type = 'info') {
-            const el = document.getElementById('status-message');
-            el.textContent = message;
-            el.style.color = type === 'error' ? '#ef4444' : type === 'success' ? '#22c55e' : 'var(--text-secondary)';
-        }
-
-        // Open add album modal
-        document.getElementById('addAlbumBtn').addEventListener('click', () => {
-            document.getElementById('addAlbumModal').classList.add('active');
-        });
-
-        // Settings button
-        document.getElementById('settingsBtn').addEventListener('click', () => {
-            document.getElementById('settingsModal').classList.add('active');
-        });
-
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            if (confirm('Are you sure you want to logout?')) {
-                location.href = '/api/logout';
-            }
-        });
-
-        // Load albums
-        async function loadAlbums() {
-            try {
-                const response = await fetch(`${API_BASE}/albums`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                const data = await response.json();
-
-                if (data.success) {
-                    state.albums = data.data?.albums || [];
-                    state.filteredAlbums = [...state.albums];
-                    renderAlbums();
-                    showStatus('Albums loaded');
-                } else {
-                    showStatus(data.message || 'Failed to load albums', 'error');
-                }
-            } catch (error) {
-                showStatus('Error loading albums: ' + error.message, 'error');
-            }
-        }
-
-        // Render albums grid
-        function renderAlbums() {
-            const grid = document.getElementById('albumsGrid');
-            if (!state.filteredAlbums.length) {
-                grid.innerHTML = '<p>No albums. Click "+ Add Album" to create one!</p>';
-                return;
-            }
-
-            grid.innerHTML = state.filteredAlbums.map(album => `
-                <div class="card" style="padding: 1.5rem;">
-                    <h3>${album.title}</h3>
-                    <p><strong>Artist:</strong> ${album.artist || 'Unknown'}</p>
-                    <p><strong>Year:</strong> ${album.year || 'Unknown'}</p>
-                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-                        <button class="btn btn-small" onclick="editAlbum('${album.albumID}')">Edit</button>
-                        <button class="btn btn-small btn-danger" onclick="deleteAlbum('${album.albumID}')">Delete</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Add album
-        document.getElementById('addAlbumForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const form = e.target;
-            const title = document.getElementById('albumTitle').value.trim();
-            const artist = document.getElementById('artistName').value.trim();
-            const year = document.getElementById('releaseYear').value;
-
-            if (!title || !artist) {
-                showStatus('Title and artist are required', 'error');
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE}/albums`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        title,
-                        artist,
-                        year: year ? parseInt(year) : null
+        // Register service worker for PWA functionality (graceful fail if not present)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('{{ url_for("static", filename="sw.js") }}')
+                    .then(registration => {
+                        console.log('Service Worker registered:', registration);
                     })
-                });
-                const data = await response.json();
-
-                if (data.success) {
-                    showStatus('Album created!', 'success');
-                    form.reset();
-                    closeModal('addAlbumModal');
-                    await loadAlbums();
-                } else {
-                    showStatus(data.message || 'Failed to create album', 'error');
-                }
-            } catch (error) {
-                showStatus('Error: ' + error.message, 'error');
-            }
-        });
-
-        // Edit album
-        async function editAlbum(albumId) {
-            const album = state.albums.find(a => a.albumID === albumId);
-            if (!album) return;
-
-            const newTitle = prompt('Enter new album title:', album.title);
-            if (newTitle === null) return;
-
-            try {
-                const response = await fetch(`${API_BASE}/albums/${albumId}`, {
-                    method: 'PUT',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title: newTitle })
-                });
-                const data = await response.json();
-
-                if (data.success) {
-                    showStatus('Album updated!', 'success');
-                    await loadAlbums();
-                } else {
-                    showStatus(data.message || 'Failed to update album', 'error');
-                }
-            } catch (error) {
-                showStatus('Error: ' + error.message, 'error');
-            }
-        }
-
-        // Delete album
-        async function deleteAlbum(albumId) {
-            if (!confirm('Are you sure you want to delete this album?')) return;
-
-            try {
-                const response = await fetch(`${API_BASE}/albums/${albumId}`, {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
-                const data = await response.json();
-
-                if (data.success) {
-                    showStatus('Album deleted!', 'success');
-                    await loadAlbums();
-                } else {
-                    showStatus(data.message || 'Failed to delete album', 'error');
-                }
-            } catch (error) {
-                showStatus('Error: ' + error.message, 'error');
-            }
-        }
-
-        // Filter albums
-        document.getElementById('filterBtn').addEventListener('click', () => {
-            const filterType = document.getElementById('filterType').value;
-            const filterValue = document.getElementById('filterValue').value.toLowerCase();
-
-            if (!filterType || !filterValue) {
-                state.filteredAlbums = [...state.albums];
-            } else {
-                state.filteredAlbums = state.albums.filter(album => {
-                    const field = album[filterType];
-                    return field ? field.toString().toLowerCase().includes(filterValue) : false;
-                });
-            }
-            renderAlbums();
-        });
-
-        // Sort albums
-        document.getElementById('sortBtn').addEventListener('click', () => {
-            const sortType = document.getElementById('sortType').value;
-
-            if (!sortType) return;
-
-            state.filteredAlbums.sort((a, b) => {
-                if (sortType === 'title-asc') return a.title.localeCompare(b.title);
-                if (sortType === 'title-desc') return b.title.localeCompare(a.title);
-                if (sortType === 'artist') return (a.artist || '').localeCompare(b.artist || '');
-                if (sortType === 'year-newest') return (b.year || 0) - (a.year || 0);
-                if (sortType === 'year-oldest') return (a.year || 0) - (b.year || 0);
-                return 0;
+                    .catch(error => {
+                        console.log('Service Worker registration not available:', error);
+                    });
             });
-            renderAlbums();
-        });
-
-        // Change password
-        document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const oldPassword = document.getElementById('oldPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmNewPassword').value;
-
-            if (!oldPassword || !newPassword || !confirmPassword) {
-                showStatus('All fields are required', 'error');
-                return;
-            }
-
-            if (newPassword !== confirmPassword) {
-                showStatus('New passwords do not match', 'error');
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE}/change-password`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        old_password: oldPassword,
-                        new_password: newPassword,
-                        confirm_password: confirmPassword
-                    })
-                });
-                const data = await response.json();
-
-                if (data.success) {
-                    showStatus('Password changed!', 'success');
-                    document.getElementById('changePasswordForm').reset();
-                    closeModal('settingsModal');
-                } else {
-                    showStatus(data.message || 'Failed to change password', 'error');
-                }
-            } catch (error) {
-                showStatus('Error: ' + error.message, 'error');
-            }
-        });
-
-        // Change email
-        document.getElementById('changeEmailForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const newEmail = document.getElementById('newEmail').value;
-            const password = document.getElementById('emailPassword').value;
-
-            if (!newEmail || !password) {
-                showStatus('All fields are required', 'error');
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE}/change-email`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        new_email: newEmail,
-                        password: password
-                    })
-                });
-                const data = await response.json();
-
-                if (data.success) {
-                    showStatus('Email changed!', 'success');
-                    document.getElementById('changeEmailForm').reset();
-                    closeModal('settingsModal');
-                } else {
-                    showStatus(data.message || 'Failed to change email', 'error');
-                }
-            } catch (error) {
-                showStatus('Error: ' + error.message, 'error');
-            }
-        });
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', loadAlbums);
+        }
     </script>
 </body>
 </html>

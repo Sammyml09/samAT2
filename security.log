@@ -75,3 +75,293 @@
 2026-06-23 00:29:45,785 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:45] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
 2026-06-23 00:29:49,428 - INFO - 127.0.0.1 - - [23/Jun/2026 00:29:49] "[31m[1mGET /api/change-password HTTP/1.1[0m" 405 -
 2026-06-23 00:31:10,872 - INFO - 127.0.0.1 - - [23/Jun/2026 00:31:10] "[31m[1mPOST /api/change-password HTTP/1.1[0m" 400 -
+2026-06-23 00:41:08,070 - INFO - Database initialized
+2026-06-23 00:41:08,073 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-23 00:41:08,073 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-23 00:41:13,806 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:13] "GET / HTTP/1.1" 200 -
+2026-06-23 00:41:13,819 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:13] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:13,820 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:13] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:13,844 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:13] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:41:13,844 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:13] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:41:18,365 - INFO - Login attempt: 'china'
+2026-06-23 00:41:18,563 - INFO - Login successful: 'china'
+2026-06-23 00:41:18,564 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:18] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-06-23 00:41:18,568 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:18] "GET /home HTTP/1.1" 200 -
+2026-06-23 00:41:18,584 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:18] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:18,584 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:18] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:18,598 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:18] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:41:18,599 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:18] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:41:20,859 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:20] "GET /albums HTTP/1.1" 200 -
+2026-06-23 00:41:20,870 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:20] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:20,870 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:20] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:20,880 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:20] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:41:20,880 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:20] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:41:20,889 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:20] "GET /api/albums HTTP/1.1" 200 -
+2026-06-23 00:41:34,244 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:34] "[35m[1mPOST /api/albums HTTP/1.1[0m" 201 -
+2026-06-23 00:41:34,249 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:34] "GET /api/albums HTTP/1.1" 200 -
+2026-06-23 00:41:37,810 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:37] "GET /home HTTP/1.1" 200 -
+2026-06-23 00:41:37,827 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:37] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:37,829 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:37] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:37,840 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:37] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:41:37,842 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:37] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:41:38,800 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:38] "GET /albums HTTP/1.1" 200 -
+2026-06-23 00:41:38,810 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:38] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:38,815 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:38] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:38,824 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:38] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:41:38,824 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:38] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:41:38,829 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:38] "GET /api/albums HTTP/1.1" 200 -
+2026-06-23 00:41:40,256 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:40] "GET /albums HTTP/1.1" 200 -
+2026-06-23 00:41:40,282 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:40] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:40,283 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:40] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:40,287 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:40] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:41:40,288 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:40] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:41:40,295 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:40] "GET /api/albums HTTP/1.1" 200 -
+2026-06-23 00:41:41,013 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:41] "GET /home HTTP/1.1" 200 -
+2026-06-23 00:41:41,028 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:41] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:41,030 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:41] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:41,042 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:41] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:41:41,042 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:41] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:41:47,011 - INFO - User logged out: 8
+2026-06-23 00:41:47,011 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:47] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-06-23 00:41:47,015 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:47] "GET / HTTP/1.1" 200 -
+2026-06-23 00:41:48,215 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:48] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-06-23 00:41:48,228 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:48] "GET / HTTP/1.1" 200 -
+2026-06-23 00:41:48,230 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:48] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:48,231 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:48] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:48,243 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:48] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:41:48,248 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:48] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:48,249 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:48] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:48,258 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:48] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-23 00:41:48,258 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:48] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:41:51,907 - INFO - Login attempt: 'china'
+2026-06-23 00:41:52,106 - INFO - Login successful: 'china'
+2026-06-23 00:41:52,106 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:52] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-06-23 00:41:52,110 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:52] "GET /home HTTP/1.1" 200 -
+2026-06-23 00:41:52,128 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:52] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:52,129 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:52] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:52,137 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:52] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:41:52,137 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:52] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:41:54,094 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:54] "GET /albums HTTP/1.1" 200 -
+2026-06-23 00:41:54,105 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:54] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:54,106 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:54] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:54,117 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:54] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:41:54,117 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:54] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:41:54,124 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:54] "GET /api/albums HTTP/1.1" 200 -
+2026-06-23 00:41:57,468 - INFO - User logged out: 8
+2026-06-23 00:41:57,468 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:57] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-06-23 00:41:57,472 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:57] "GET / HTTP/1.1" 200 -
+2026-06-23 00:41:58,408 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:58] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-06-23 00:41:58,425 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:58] "GET / HTTP/1.1" 200 -
+2026-06-23 00:41:58,426 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:58] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:58,430 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:58] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:58,435 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:58] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:41:58,442 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:58] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:41:58,443 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:58] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:41:58,449 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:58] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-23 00:41:58,450 - INFO - 127.0.0.1 - - [23/Jun/2026 00:41:58] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:42:01,625 - INFO - Login attempt: 'zammy'
+2026-06-23 00:42:01,626 - WARNING - Login failed: 'zammy'
+2026-06-23 00:42:01,626 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:01] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-06-23 00:42:01,629 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:01] "GET / HTTP/1.1" 200 -
+2026-06-23 00:42:01,641 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:01] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:42:01,643 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:01] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:42:01,650 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:01] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:42:01,651 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:01] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:42:24,588 - INFO - User registered: 'deez'
+2026-06-23 00:42:24,588 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:24] "[32mPOST /api/register HTTP/1.1[0m" 302 -
+2026-06-23 00:42:24,592 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:24] "GET /home HTTP/1.1" 200 -
+2026-06-23 00:42:24,611 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:24] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:42:24,612 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:24] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:42:24,620 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:24] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:42:24,620 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:24] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:42:26,318 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:26] "GET /albums HTTP/1.1" 200 -
+2026-06-23 00:42:26,329 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:26] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:42:26,334 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:26] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:42:26,345 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:26] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:42:26,345 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:26] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:42:26,354 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:26] "GET /api/albums HTTP/1.1" 200 -
+2026-06-23 00:42:40,945 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:40] "[35m[1mPOST /api/albums HTTP/1.1[0m" 201 -
+2026-06-23 00:42:40,948 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:40] "GET /api/albums HTTP/1.1" 200 -
+2026-06-23 00:42:48,637 - INFO - User logged out: 9
+2026-06-23 00:42:48,637 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:48] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-06-23 00:42:48,647 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:48] "GET / HTTP/1.1" 200 -
+2026-06-23 00:42:49,775 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:49] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-06-23 00:42:49,792 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:49] "GET / HTTP/1.1" 200 -
+2026-06-23 00:42:49,793 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:49] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:42:49,793 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:49] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:42:49,810 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:49] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:42:49,811 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:49] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:42:49,819 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:49] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:42:49,820 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:49] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:42:54,375 - INFO - Login attempt: 'china'
+2026-06-23 00:42:54,574 - INFO - Login successful: 'china'
+2026-06-23 00:42:54,575 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:54] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-06-23 00:42:54,578 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:54] "GET /home HTTP/1.1" 200 -
+2026-06-23 00:42:54,590 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:54] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:42:54,591 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:54] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:42:54,599 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:54] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:42:54,599 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:54] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:42:56,579 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:56] "GET /albums HTTP/1.1" 200 -
+2026-06-23 00:42:56,592 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:56] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:42:56,595 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:56] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:42:56,606 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:56] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:42:56,606 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:56] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:42:56,621 - INFO - 127.0.0.1 - - [23/Jun/2026 00:42:56] "GET /api/albums HTTP/1.1" 200 -
+2026-06-23 00:43:13,206 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:13] "[31m[1mPOST /api/change-password HTTP/1.1[0m" 400 -
+2026-06-23 00:43:13,572 - INFO - Password changed for user: 8
+2026-06-23 00:43:13,572 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:13] "POST /api/change-password HTTP/1.1" 200 -
+2026-06-23 00:43:17,740 - INFO - User logged out: 8
+2026-06-23 00:43:17,740 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:17] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-06-23 00:43:17,749 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:17] "GET / HTTP/1.1" 200 -
+2026-06-23 00:43:18,800 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:18] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-06-23 00:43:18,814 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:18] "GET / HTTP/1.1" 200 -
+2026-06-23 00:43:18,818 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:18] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:43:18,819 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:18] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:43:18,835 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:18] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:43:18,836 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:18] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:43:18,843 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:18] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:43:18,844 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:18] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:43:26,671 - INFO - Login attempt: 'china'
+2026-06-23 00:43:26,870 - INFO - Login successful: 'china'
+2026-06-23 00:43:26,870 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:26] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-06-23 00:43:26,875 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:26] "GET /home HTTP/1.1" 200 -
+2026-06-23 00:43:26,895 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:26] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:43:26,896 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:26] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:43:26,904 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:26] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:43:26,904 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:26] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:43:27,709 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:27] "GET /albums HTTP/1.1" 200 -
+2026-06-23 00:43:27,723 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:27] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:43:27,724 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:27] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:43:27,734 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:27] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:43:27,734 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:27] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:43:27,743 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:27] "GET /api/albums HTTP/1.1" 200 -
+2026-06-23 00:43:31,226 - INFO - User logged out: 8
+2026-06-23 00:43:31,227 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:31] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-06-23 00:43:31,231 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:31] "GET / HTTP/1.1" 200 -
+2026-06-23 00:43:32,107 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:32] "[32mGET /api/logout HTTP/1.1[0m" 302 -
+2026-06-23 00:43:32,122 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:32] "GET / HTTP/1.1" 200 -
+2026-06-23 00:43:32,122 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:32] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:43:32,124 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:32] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:43:32,142 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:32] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:43:32,143 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:32] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:43:32,151 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:43:32,152 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:32] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:43:35,569 - INFO - Login attempt: 'china'
+2026-06-23 00:43:35,768 - WARNING - Login failed: 'china'
+2026-06-23 00:43:35,768 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:35] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-06-23 00:43:35,772 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:35] "GET / HTTP/1.1" 200 -
+2026-06-23 00:43:35,791 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:35] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:43:35,792 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:35] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:43:35,799 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:35] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 00:43:35,799 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:35] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:43:38,020 - INFO - Login attempt: 'china'
+2026-06-23 00:43:38,219 - INFO - Login successful: 'china'
+2026-06-23 00:43:38,219 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:38] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-06-23 00:43:38,223 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:38] "GET /home HTTP/1.1" 200 -
+2026-06-23 00:43:38,242 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:38] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 00:43:38,244 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:38] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 00:43:38,250 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:38] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 00:43:38,251 - INFO - 127.0.0.1 - - [23/Jun/2026 00:43:38] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 09:07:40,203 - INFO - Database initialized
+2026-06-23 09:07:40,205 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-23 09:07:40,205 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-23 09:08:07,274 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:07] "GET / HTTP/1.1" 200 -
+2026-06-23 09:08:07,290 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:07] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 09:08:07,291 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:07] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 09:08:07,301 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:07] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-23 09:08:07,301 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:07] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-23 09:08:07,325 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:07] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-06-23 09:08:15,600 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:15] "GET / HTTP/1.1" 200 -
+2026-06-23 09:08:15,623 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:15] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 09:08:15,625 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:15] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 09:08:15,644 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:15] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 09:08:15,644 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:15] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 09:08:15,688 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:15] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-06-23 09:08:19,887 - INFO - Login attempt: 'china'
+2026-06-23 09:08:20,087 - INFO - Login successful: 'china'
+2026-06-23 09:08:20,087 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:20] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-06-23 09:08:20,091 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:20] "GET /home HTTP/1.1" 200 -
+2026-06-23 09:08:20,107 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:20] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 09:08:20,108 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:20] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 09:08:20,118 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:20] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 09:08:20,119 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:20] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 09:08:21,136 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:21] "GET /albums HTTP/1.1" 200 -
+2026-06-23 09:08:21,158 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:21] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-23 09:08:21,159 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:21] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-23 09:08:21,167 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:21] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-23 09:08:21,167 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:21] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2026-06-23 09:08:21,176 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:21] "GET /api/albums HTTP/1.1" 200 -
+2026-06-23 09:08:23,751 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:23] "PUT /api/albums/5b02ead5-08e6-4093-8c2f-46c8bb4f39cc HTTP/1.1" 200 -
+2026-06-23 09:08:23,758 - INFO - 127.0.0.1 - - [23/Jun/2026 09:08:23] "GET /api/albums HTTP/1.1" 200 -
+2026-06-23 09:14:47,358 - INFO - 127.0.0.1 - - [23/Jun/2026 09:14:47] "GET / HTTP/1.1" 200 -
+2026-06-23 09:16:16,733 - INFO - Database initialized
+2026-06-23 09:16:16,733 - INFO - Flask application started
+2026-06-23 09:16:21,951 - INFO - 127.0.0.1 - - [23/Jun/2026 09:16:21] "[31m[1mPOST /api/register HTTP/1.1[0m" 400 -
+2026-06-23 09:16:35,400 - INFO - Database initialized
+2026-06-23 09:16:35,401 - INFO - Flask application started
+2026-06-23 09:16:49,771 - INFO - Database initialized
+2026-06-23 09:16:49,771 - INFO - Flask application started
+2026-06-23 09:16:49,774 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2026-06-23 09:16:49,774 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-23 09:16:55,127 - INFO - 127.0.0.1 - - [23/Jun/2026 09:16:55] "[31m[1mPOST /api/register HTTP/1.1[0m" 400 -
+2026-06-23 09:17:01,831 - INFO - User registered: 'testuser'
+2026-06-23 09:17:01,831 - INFO - 127.0.0.1 - - [23/Jun/2026 09:17:01] "[35m[1mPOST /api/register HTTP/1.1[0m" 201 -
+2026-06-23 09:17:06,304 - INFO - Login attempt: 'testuser'
+2026-06-23 09:17:06,495 - INFO - Login successful: 'testuser'
+2026-06-23 09:17:06,495 - INFO - 127.0.0.1 - - [23/Jun/2026 09:17:06] "POST /api/login HTTP/1.1" 200 -
+2026-06-23 09:17:10,188 - INFO - 127.0.0.1 - - [23/Jun/2026 09:17:10] "[35m[1mPOST /api/albums HTTP/1.1[0m" 201 -
+2026-06-23 09:17:13,865 - INFO - 127.0.0.1 - - [23/Jun/2026 09:17:13] "[35m[1mPOST /api/albums/edbc7a28-2c9b-4f40-b323-6b3b9bb64e42/songs HTTP/1.1[0m" 201 -
+2026-06-23 09:17:17,232 - INFO - 127.0.0.1 - - [23/Jun/2026 09:17:17] "GET /api/albums HTTP/1.1" 200 -
+2026-06-23 09:17:20,513 - INFO - 127.0.0.1 - - [23/Jun/2026 09:17:20] "[31m[1mGET /api/albums/edbc7a28-2c9b-4f40-b323-6b3b9bb64e42/songs HTTP/1.1[0m" 403 -
+2026-06-23 09:18:44,200 - INFO - Database initialized
+2026-06-23 09:18:44,200 - INFO - Flask application started
+2026-06-23 09:18:50,417 - INFO - 127.0.0.1 - - [23/Jun/2026 09:18:50] "[31m[1mPOST /api/register HTTP/1.1[0m" 400 -
+2026-06-23 09:18:50,426 - INFO - 127.0.0.1 - - [23/Jun/2026 09:18:50] "[31m[1mPOST /api/albums HTTP/1.1[0m" 401 -
+2026-06-23 09:19:00,578 - INFO - Database initialized
+2026-06-23 09:19:00,578 - INFO - Flask application started
+2026-06-23 09:19:00,581 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5002
+2026-06-23 09:19:00,581 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-23 09:19:06,879 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:06] "[31m[1mPOST /api/register HTTP/1.1[0m" 400 -
+2026-06-23 09:19:06,892 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:06] "[31m[1mPOST /api/albums HTTP/1.1[0m" 401 -
+2026-06-23 09:19:11,670 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:11] "[31m[1mPOST /api/register HTTP/1.1[0m" 400 -
+2026-06-23 09:19:15,503 - INFO - User registered: 'userOne'
+2026-06-23 09:19:15,503 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:15] "[35m[1mPOST /api/register HTTP/1.1[0m" 201 -
+2026-06-23 09:19:20,537 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:20] "[31m[1mPOST /api/albums HTTP/1.1[0m" 401 -
+2026-06-23 09:19:20,554 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:20] "[31m[1mPOST /api/albums/null/songs HTTP/1.1[0m" 401 -
+2026-06-23 09:19:20,564 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:20] "[31m[1mGET /api/albums/null/songs HTTP/1.1[0m" 401 -
+2026-06-23 09:19:24,452 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:24] "[31m[1mPOST /api/albums HTTP/1.1[0m" 401 -
+2026-06-23 09:19:33,222 - INFO - User registered: 'testUser'
+2026-06-23 09:19:33,223 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:33] "[35m[1mPOST /api/register HTTP/1.1[0m" 201 -
+2026-06-23 09:19:33,231 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:33] "[31m[1mPOST /api/albums HTTP/1.1[0m" 401 -
+2026-06-23 09:19:38,450 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:38] "[31m[1mPOST /api/register HTTP/1.1[0m" 400 -
+2026-06-23 09:19:38,460 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:38] "[31m[1mPOST /api/albums HTTP/1.1[0m" 401 -
+2026-06-23 09:19:42,953 - INFO - 127.0.0.1 - - [23/Jun/2026 09:19:42] "GET / HTTP/1.1" 200 -
+2026-06-23 09:20:07,126 - INFO - Database initialized
+2026-06-23 09:20:07,126 - INFO - Flask application started
+2026-06-23 09:20:07,129 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5002
+2026-06-23 09:20:07,129 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-23 09:20:15,425 - INFO - User registered: 'testUser'
+2026-06-23 09:20:15,425 - INFO - 127.0.0.1 - - [23/Jun/2026 09:20:15] "[35m[1mPOST /api/register HTTP/1.1[0m" 201 -
+2026-06-23 09:20:15,434 - INFO - 127.0.0.1 - - [23/Jun/2026 09:20:15] "[31m[1mPOST /api/albums HTTP/1.1[0m" 401 -
+2026-06-23 09:20:15,445 - INFO - 127.0.0.1 - - [23/Jun/2026 09:20:15] "[31m[1mPOST /api/albums/null/songs HTTP/1.1[0m" 401 -
+2026-06-23 09:20:15,452 - INFO - 127.0.0.1 - - [23/Jun/2026 09:20:15] "[31m[1mGET /api/albums/null/songs HTTP/1.1[0m" 401 -
+2026-06-23 09:20:20,599 - INFO - User registered: 'debugUser'
+2026-06-23 09:20:20,600 - INFO - 127.0.0.1 - - [23/Jun/2026 09:20:20] "[35m[1mPOST /api/register HTTP/1.1[0m" 201 -
+2026-06-23 09:20:20,608 - INFO - 127.0.0.1 - - [23/Jun/2026 09:20:20] "[31m[1mPOST /api/albums HTTP/1.1[0m" 401 -
+2026-06-23 09:20:30,304 - INFO - User registered: 'curlUser'
+2026-06-23 09:20:30,304 - INFO - 127.0.0.1 - - [23/Jun/2026 09:20:30] "[35m[1mPOST /api/register HTTP/1.1[0m" 201 -
+2026-06-23 09:21:20,891 - INFO - Database initialized
+2026-06-23 09:21:20,892 - INFO - Flask application started
+2026-06-23 09:21:20,894 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5002
+2026-06-23 09:21:20,895 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-23 09:21:29,226 - INFO - User registered: 'finalUser'
+2026-06-23 09:21:29,227 - INFO - 127.0.0.1 - - [23/Jun/2026 09:21:29] "[35m[1mPOST /api/register HTTP/1.1[0m" 201 -
+2026-06-23 09:21:29,238 - INFO - 127.0.0.1 - - [23/Jun/2026 09:21:29] "[35m[1mPOST /api/albums HTTP/1.1[0m" 201 -
+2026-06-23 09:21:29,248 - INFO - 127.0.0.1 - - [23/Jun/2026 09:21:29] "[35m[1mPOST /api/albums/0b9c2078-93e5-494b-a8aa-765c959ad85b/songs HTTP/1.1[0m" 201 -
+2026-06-23 09:21:29,258 - INFO - 127.0.0.1 - - [23/Jun/2026 09:21:29] "GET /api/albums/0b9c2078-93e5-494b-a8aa-765c959ad85b/songs HTTP/1.1" 200 -

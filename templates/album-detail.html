@@ -1,0 +1,376 @@
+<!--
+###############################################################################
+# Music Diary PWA - Album Detail Page
+#
+# Author: Sam Lucas
+# Email: sam.lucas5@education.nsw.gov.au
+# Date: December 6, 2025
+#
+# Purpose: Displays individual album details and manages songs within albums.
+#          Enables song rating, commenting, and album metadata viewing.
+#
+###############################################################################
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="description" content="Music Diary - Album Details">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <title>Music Diary - Album Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="/home" class="logo">Music Diary</a>
+            </div>
+            <nav>
+                <a href="/home">Home</a>
+                <a href="/albums">Albums</a>
+                <button id="logoutBtn" style="cursor: pointer;">Logout</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="container">
+            <a href="/albums" style="color: var(--primary-color); text-decoration: none; margin-bottom: 1rem; display: inline-block;">← Back to Albums</a>
+
+            <div id="albumDetails">
+                <!-- Album header and details will be rendered here -->
+            </div>
+
+            <div class="section-title">Add Song to Album 🎵</div>
+
+            <div style="background: rgba(255, 255, 255, 0.02); padding: 1.5rem; border-radius: var(--radius); margin-bottom: 2rem;">
+                <form id="addSongForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="songName">Song Title *</label>
+                        <input 
+                            type="text" 
+                            id="songName" 
+                            placeholder="Enter song title"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="songRating">Rating (1-5 Stars) *</label>
+                        <select id="songRating" required>
+                            <option value="">Select a rating</option>
+                            <option value="1">⭐ 1 Star</option>
+                            <option value="2">⭐⭐ 2 Stars</option>
+                            <option value="3">⭐⭐⭐ 3 Stars</option>
+                            <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+                            <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="songComment">Song Comment</label>
+                        <textarea 
+                            id="songComment" 
+                            placeholder="Share your thoughts about this song..."
+                            rows="3"
+                            style="resize: vertical;"
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add Song</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('addSongForm').style.display='none'" style="margin-left: 1rem;">Cancel</button>
+                </form>
+
+                <button id="toggleSongFormBtn" class="btn btn-secondary" style="width: auto;" onclick="toggleSongForm()">+ Add Song</button>
+            </div>
+
+            <div class="section-title">Songs in This Album 🎶</div>
+
+            <div id="songsList" class="songs-list">
+                <!-- Songs will be rendered here -->
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/albumScripts.js') }}"></script>
+   
+    <script>
+        // Album detail page specific functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const albumId = urlParams.get('id');
+            
+            if (!albumId) {
+                window.location.href = '/albums';
+                return;
+            }
+
+            loadAlbumDetail(albumId);
+        });
+
+        function loadAlbumDetail(albumId) {
+            // Fetch album data from API
+            fetch(`/api/albums/${albumId}`, {
+                method: 'GET',
+                credentials: 'include'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.data && data.data.album) {
+                        const album = data.data.album;
+                        // Fetch songs for this album
+                        return fetch(`/api/albums/${albumId}/songs`, {
+                            method: 'GET',
+                            credentials: 'include'
+                        }).then(res => res.json()).then(songsData => {
+                            displayAlbumDetail(album, songsData.data ? songsData.data.songs : []);
+                        });
+                    }
+                    throw new Error('Album not found');
+                })
+                .catch(error => {
+                    console.error('Error loading album:', error);
+                    document.getElementById('albumDetails').innerHTML = '<p style="color: var(--error-color);">Failed to load album. <a href="/albums">Go back</a></p>';
+                });
+        }
+
+        function displayAlbumDetail(album, songs) {
+            const avgRating = calculateAverageRating(songs);
+            
+            const detailsHTML = `
+                <div class="album-header">
+                    <div class="album-cover">🎵</div>
+                    <div class="album-info">
+                        <h1>${escapeHtml(album.title)}</h1>
+                        <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">by ${escapeHtml(album.artist || 'Unknown')}</p>
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Released: ${album.year || 'Unknown'}</p>
+                        
+                        <div style="background: rgba(99, 102, 241, 0.1); padding: 1rem; border-radius: var(--radius); margin-bottom: 1rem;">
+                            <strong style="color: var(--primary-color);">Average Rating:</strong>
+                            <div style="font-size: 1.5rem; color: var(--warning-color);">
+                                ${avgRating > 0 ? `⭐ ${avgRating.toFixed(1)}/5` : 'No ratings yet'}
+                            </div>
+                        </div>
+
+                        ${album.comment ? `
+                            <div style="border-left: 3px solid var(--primary-color); padding-left: 1rem; margin-top: 1rem;">
+                                <p style="color: var(--text-secondary); font-style: italic;">"${escapeHtml(album.comment)}"</p>
+                            </div>
+                        ` : ''}
+
+                        <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button class="btn btn-secondary" onclick="editAlbum('${album.albumID}')" style="width: auto;">Edit Album</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteAlbum('${album.albumID}')" style="width: auto;">Delete Album</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('albumDetails').innerHTML = detailsHTML;
+            
+            // Store albumId in window for use in other functions
+            window.currentAlbumId = album.albumID;
+            window.currentSongs = songs;
+
+            // Render songs
+            renderSongDetail(songs);
+
+            // Wire the add song form
+            document.getElementById('addSongForm').onsubmit = function(e) {
+                e.preventDefault();
+                addSongToAlbum(album.albumID);
+            };
+        }
+
+        function calculateAverageRating(songs) {
+            if (!songs || songs.length === 0) return 0;
+            const sum = songs.reduce((acc, song) => acc + (song.rating || 0), 0);
+            return sum / songs.length;
+        }
+
+        function renderSongDetail(songs) {
+            const container = document.getElementById('songsList');
+
+            if (!songs || songs.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">No songs added yet. Add one to get started!</p>';
+                return;
+            }
+
+            container.innerHTML = songs.map(song => `
+                <div class="song-item">
+                    <div>
+                        <div class="song-title">${escapeHtml(song.title)}</div>
+                        <div style="color: var(--warning-color); font-weight: bold; margin: 0.5rem 0;">⭐ ${song.rating || 0}/5</div>
+                        ${song.comment ? `<div class="song-comment">"${escapeHtml(song.comment)}"</div>` : ''}
+                    </div>
+                    <button class="btn btn-danger btn-small" onclick="deleteSongFromAlbum('${song.songID}')">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        function toggleSongForm() {
+            const form = document.getElementById('addSongForm');
+            const btn = document.getElementById('toggleSongFormBtn');
+            
+            if (form.style.display === 'none') {
+                form.style.display = 'block';
+                btn.textContent = '✕ Cancel';
+            } else {
+                form.style.display = 'none';
+                btn.textContent = '+ Add Song';
+            }
+        }
+
+        function addSongToAlbum(albumId) {
+            const songName = document.getElementById('songName').value.trim();
+            const songRating = parseInt(document.getElementById('songRating').value);
+            const songComment = document.getElementById('songComment').value.trim();
+
+            if (!songName || !songRating) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            fetch(`/api/albums/${albumId}/songs`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: songName,
+                    rating: songRating,
+                    comment: songComment
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Song added successfully!');
+                        // Reset form and reload
+                        document.getElementById('addSongForm').reset();
+                        document.getElementById('addSongForm').style.display = 'none';
+                        document.getElementById('toggleSongFormBtn').textContent = '+ Add Song';
+                        loadAlbumDetail(albumId);
+                    } else {
+                        alert('Error: ' + (data.message || 'Failed to add song'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error adding song:', error);
+                    alert('Error adding song: ' + error.message);
+                });
+        }
+
+        function deleteSongFromAlbum(songId) {
+            if (!confirm('Are you sure you want to delete this song?')) return;
+
+            fetch(`/api/songs/${songId}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Song deleted successfully!');
+                        loadAlbumDetail(window.currentAlbumId);
+                    } else {
+                        alert('Error: ' + (data.message || 'Failed to delete song'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting song:', error);
+                    alert('Error deleting song: ' + error.message);
+                });
+        }
+
+        function editAlbum(albumId) {
+            const album = window.currentAlbum;
+            if (!album) return;
+
+            const newTitle = prompt('Enter new album title:', album.title);
+            if (newTitle === null) return;
+
+            fetch(`/api/albums/${albumId}`, {
+                method: 'PUT',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: newTitle })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Album updated!');
+                        loadAlbumDetail(albumId);
+                    } else {
+                        alert('Error: ' + (data.message || 'Failed to update album'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating album:', error);
+                    alert('Error updating album: ' + error.message);
+                });
+        }
+
+        function confirmDeleteAlbum(albumId) {
+            if (confirm('Are you sure you want to delete this album? This cannot be undone.')) {
+                fetch(`/api/albums/${albumId}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Album deleted successfully!');
+                            window.location.href = '/albums';
+                        } else {
+                            alert('Error: ' + (data.message || 'Failed to delete album'));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting album:', error);
+                        alert('Error deleting album: ' + error.message);
+                    });
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Logout button
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                if (confirm('Are you sure you want to logout?')) {
+                    window.location.href = '/api/logout';
+                }
+            });
+        });
+    </script>
+    <script>
+        // Register service worker for PWA functionality (graceful fail if not present)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('{{ url_for("static", filename="sw.js") }}')
+                    .then(registration => {
+                        console.log('Service Worker registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration not available:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
