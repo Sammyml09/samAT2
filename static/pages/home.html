@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Diary - Home</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="logo-section">
+        <a href="home.html" class="logo">Music Diary</a>
+      </div>
+      <nav>
+        <a href="home.html">Home</a>
+        <a href="albums.html">Albums</a>
+        <button id="logout-btn" type="button">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <div class="container">
+      <h1 class="page-title">Music Diary</h1>
+      <p id="auth-status">Sign in to manage your albums and songs.</p>
+
+      <div id="auth-section">
+        <form id="login-form" class="form-card">
+          <h2>Login</h2>
+          <div class="form-group">
+            <label for="login-username">Username</label>
+            <input id="login-username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input id="login-password" name="password" type="password" required>
+          </div>
+          <button type="submit">Login</button>
+        </form>
+
+        <form id="register-form" class="form-card">
+          <h2>Register</h2>
+          <div class="form-group">
+            <label for="register-username">Username</label>
+            <input id="register-username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input id="register-email" name="email" type="email" required>
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input id="register-password" name="password" type="password" required>
+          </div>
+          <div class="form-group">
+            <label for="register-confirm-password">Confirm Password</label>
+            <input id="register-confirm-password" name="confirm_password" type="password" required>
+          </div>
+          <button type="submit">Register</button>
+        </form>
+      </div>
+
+      <div id="user-area" style="display:none;">
+        <p>You are signed in.</p>
+        <a href="albums.html">Go to albums</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/myScripts.js"></script>
+</body>
+</html>
