@@ -336,10 +336,13 @@ let appState = {
     currentUser: null
 };
 
-// Initialize albums on page load
+// Initialize albums on page load (only if on albums page)
 document.addEventListener('DOMContentLoaded', () => {
-    setupAlbumEventListeners();
-    loadAlbums();
+    // Only initialize album features if on the albums page
+    if (document.getElementById('addAlbumBtn') || document.getElementById('albumsGrid')) {
+        setupAlbumEventListeners();
+        loadAlbums();
+    }
 });
 
 function setupAlbumEventListeners() {
