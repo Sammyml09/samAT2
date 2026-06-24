@@ -83,6 +83,7 @@ header {
   transition: all 0.3s ease;
   display: inline-block;
   text-align: center;
+  text-decoration: none;
 }
 
 .btn-primary {
@@ -600,15 +601,16 @@ header {
 
 .album-header {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: minmax(240px, 320px) 1fr;
   gap: 2rem;
   margin-bottom: 2rem;
   align-items: start;
 }
 
 .album-cover {
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1 / 1;
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   border-radius: var(--radius);
   display: flex;
@@ -616,6 +618,24 @@ header {
   justify-content: center;
   font-size: 4rem;
   color: white;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(99, 102, 241, 0.25);
+}
+
+.album-cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.album-grid-cover {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .album-info h1 {
@@ -627,6 +647,44 @@ header {
 .album-info p {
   color: var(--text-secondary);
   margin-bottom: 1rem;
+}
+
+.album-info-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.album-info-meta {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.album-stat-card {
+  background: rgba(99, 102, 241, 0.1);
+  padding: 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+}
+
+.album-stat-title {
+  color: var(--primary-color);
+}
+
+.album-stat-value {
+  font-size: 1.5rem;
+  color: var(--warning-color);
+}
+
+.album-comment-box {
+  border-left: 3px solid var(--primary-color);
+  padding-left: 1rem;
+  margin-top: 1rem;
+}
+
+.album-comment-box p {
+  color: var(--text-secondary);
+  font-style: italic;
+  margin: 0;
 }
 
 .songs-list {
@@ -660,6 +718,20 @@ header {
   color: var(--text-secondary);
   font-size: 0.9rem;
   margin-top: 0.5rem;
+}
+
+.recommendation-meta {
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+
+.recommendation-card {
+  cursor: default;
+}
+
+.recommendation-year {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
 /* ========================================
@@ -783,11 +855,12 @@ header {
   .album-header {
     grid-template-columns: 1fr;
     text-align: center;
+    justify-items: center;
   }
 
   .album-cover {
-    width: 100%;
-    height: 250px;
+    width: min(100%, 320px);
+    max-width: 100%;
   }
 
   .song-item {

@@ -31,9 +31,9 @@
                 <a href="/home" class="logo">Music Diary</a>
             </div>
             <nav>
-                <a href="/home">Home</a>
-                <a href="/albums">Albums</a>
-                <button id="logoutBtn" style="cursor: pointer;">Logout</button>
+                <a href="/home" class="btn btn-secondary">Home</a>
+                <a href="/albums" class="btn btn-secondary">Albums</a>
+                <button id="logoutBtn" class="btn btn-secondary" style="cursor: pointer;">Logout</button>
             </nav>
         </div>
     </header>
@@ -83,7 +83,6 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">Add Song</button>
-                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('addSongForm').style.display='none'" style="margin-left: 1rem;">Cancel</button>
                 </form>
 
                 <button id="toggleSongFormBtn" class="btn btn-secondary" style="width: auto;" onclick="toggleSongForm()">+ Add Song</button>
@@ -93,6 +92,12 @@
 
             <div id="songsList" class="songs-list">
                 <!-- Songs will be rendered here -->
+            </div>
+
+            <div class="section-title">Recommended Albums 🤖</div>
+            <div id="recommendationsMeta" class="recommendation-meta"></div>
+            <div id="recommendationsGrid" class="grid-container">
+                <!-- Recommended albums will be rendered here -->
             </div>
         </div>
     </main>
@@ -123,12 +128,19 @@
                 .then(data => {
                     if (data.success && data.data && data.data.album) {
                         const album = data.data.album;
-                        // Fetch songs for this album
+                        if (typeof cacheAndPreloadAlbumCover === 'function') {
+                            cacheAndPreloadAlbumCover(album);
+                        }
+                        // Fetch songs, then load recommendations in the background so the page can render first
                         return fetch(`/api/albums/${albumId}/songs`, {
                             method: 'GET',
                             credentials: 'include'
                         }).then(res => res.json()).then(songsData => {
-                            displayAlbumDetail(album, songsData.data ? songsData.data.songs : []);
+                            displayAlbumDetail(
+                                album,
+                                songsData.data ? songsData.data.songs : []
+                            );
+                            loadRecommendations(albumId);
                         });
                     }
                     throw new Error('Album not found');
@@ -141,25 +153,32 @@
 
         function displayAlbumDetail(album, songs) {
             const avgRating = calculateAverageRating(songs);
+            const coverUrl = typeof resolveAlbumCoverUrl === 'function'
+                ? resolveAlbumCoverUrl(album)
+                : album.cover_url;
             
             const detailsHTML = `
                 <div class="album-header">
-                    <div class="album-cover">🎵</div>
+                    <div class="album-cover">
+                        ${coverUrl
+                            ? `<img src="${escapeHtml(coverUrl)}" alt="${escapeHtml(album.title)} album cover" class="album-cover-image">`
+                            : '🎵'}
+                    </div>
                     <div class="album-info">
                         <h1>${escapeHtml(album.title)}</h1>
-                        <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">by ${escapeHtml(album.artist || 'Unknown')}</p>
-                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Released: ${album.year || 'Unknown'}</p>
+                        <p class="album-info-subtitle">by ${escapeHtml(album.artist || 'Unknown')}</p>
+                        <p class="album-info-meta">Released: ${album.year || 'Unknown'}</p>
                         
-                        <div style="background: rgba(99, 102, 241, 0.1); padding: 1rem; border-radius: var(--radius); margin-bottom: 1rem;">
-                            <strong style="color: var(--primary-color);">Average Rating:</strong>
-                            <div style="font-size: 1.5rem; color: var(--warning-color);">
+                        <div class="album-stat-card">
+                            <strong class="album-stat-title">Average Rating</strong>
+                            <div class="album-stat-value">
                                 ${avgRating > 0 ? `⭐ ${avgRating.toFixed(1)}/5` : 'No ratings yet'}
                             </div>
                         </div>
 
                         ${album.comment ? `
-                            <div style="border-left: 3px solid var(--primary-color); padding-left: 1rem; margin-top: 1rem;">
-                                <p style="color: var(--text-secondary); font-style: italic;">"${escapeHtml(album.comment)}"</p>
+                            <div class="album-comment-box">
+                                <p>"${escapeHtml(album.comment)}"</p>
                             </div>
                         ` : ''}
 
@@ -174,11 +193,13 @@
             document.getElementById('albumDetails').innerHTML = detailsHTML;
             
             // Store albumId in window for use in other functions
+            window.currentAlbum = album;
             window.currentAlbumId = album.albumID;
             window.currentSongs = songs;
 
             // Render songs
             renderSongDetail(songs);
+            renderRecommendations(null);
 
             // Wire the add song form
             document.getElementById('addSongForm').onsubmit = function(e) {
@@ -211,6 +232,76 @@
                     <button class="btn btn-danger btn-small" onclick="deleteSongFromAlbum('${song.songID}')">Delete</button>
                 </div>
             `).join('');
+        }
+
+        function renderRecommendations(recommendationsData) {
+            const metaContainer = document.getElementById('recommendationsMeta');
+            const grid = document.getElementById('recommendationsGrid');
+            if (!metaContainer || !grid) return;
+
+            if (!recommendationsData) {
+                metaContainer.textContent = 'Generating personalized recommendations...';
+                grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary); padding: 1rem;">Loading recommendations...</p>';
+                return;
+            }
+
+            const profile = typeof recommendationsData.profile === 'string' ? recommendationsData.profile : '';
+            const recommendations = Array.isArray(recommendationsData?.recommendations)
+                ? recommendationsData.recommendations
+                : [];
+
+            metaContainer.textContent = profile
+                ? `Based on this album's Spotify metadata: ${profile}`
+                : 'Personalized from the selected album and Spotify metadata.';
+
+            if (!recommendations.length) {
+                grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary); padding: 1rem;">No recommendations found yet. Try another album or revisit later for a different mix.</p>';
+                return;
+            }
+
+            grid.innerHTML = recommendations.map((album) => `
+                <article class="card recommendation-card" role="article">
+                    ${album.cover_url
+                        ? `<img src="${escapeHtml(album.cover_url)}" alt="${escapeHtml(album.title)} cover" class="album-grid-cover">`
+                        : '<div class="card-image">🎵</div>'}
+                    <h3 class="card-title">${escapeHtml(album.title || 'Unknown Album')}</h3>
+                    <p class="card-subtitle">by ${escapeHtml(album.artist || 'Unknown')}</p>
+                    <p class="recommendation-year">${album.year || 'Unknown year'}</p>
+                </article>
+            `).join('');
+        }
+
+        function loadRecommendations(albumId) {
+            const metaContainer = document.getElementById('recommendationsMeta');
+            const grid = document.getElementById('recommendationsGrid');
+            if (metaContainer && grid) {
+                metaContainer.textContent = 'Generating personalized recommendations...';
+                grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary); padding: 1rem;">Loading recommendations...</p>';
+            }
+
+            fetch(`/api/albums/${albumId}/recommendations?ts=${Date.now()}`, {
+                method: 'GET',
+                credentials: 'include',
+                cache: 'no-store'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        renderRecommendations(data.data);
+                    } else {
+                        renderRecommendations({
+                            profile: '',
+                            recommendations: []
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading recommendations:', error);
+                    renderRecommendations({
+                        profile: '',
+                        recommendations: []
+                    });
+                });
         }
 
         function toggleSongForm() {

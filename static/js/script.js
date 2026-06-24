@@ -330,11 +330,56 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================
 
 const API_BASE = '/api';
+const ALBUM_COVER_CACHE_KEY = 'albumCoverCacheV1';
 let appState = {
     albums: [],
     filteredAlbums: [],
     currentUser: null
 };
+
+function getAlbumCoverCache() {
+    try {
+        return JSON.parse(localStorage.getItem(ALBUM_COVER_CACHE_KEY) || '{}');
+    } catch (error) {
+        console.warn('Failed to read album cover cache:', error);
+        return {};
+    }
+}
+
+function setAlbumCoverCache(cacheMap) {
+    localStorage.setItem(ALBUM_COVER_CACHE_KEY, JSON.stringify(cacheMap));
+}
+
+function cacheAlbumCover(album) {
+    if (!album || !album.albumID || !album.cover_url) return;
+    const cacheMap = getAlbumCoverCache();
+    cacheMap[album.albumID] = album.cover_url;
+    setAlbumCoverCache(cacheMap);
+}
+
+function resolveAlbumCoverUrl(album) {
+    if (!album || !album.albumID) return null;
+    const cacheMap = getAlbumCoverCache();
+    return cacheMap[album.albumID] || album.cover_url || null;
+}
+
+function preloadImage(url) {
+    if (!url) return;
+    const img = new Image();
+    img.src = url;
+}
+
+function cacheAndPreloadAlbumCover(album) {
+    const coverUrl = resolveAlbumCoverUrl(album);
+    if (!coverUrl) return null;
+    if (album.cover_url !== coverUrl) {
+        album.cover_url = coverUrl;
+    } else {
+        cacheAlbumCover(album);
+    }
+    preloadImage(coverUrl);
+    return coverUrl;
+}
 
 // Initialize albums on page load (only if on albums page)
 document.addEventListener('DOMContentLoaded', () => {
@@ -395,6 +440,7 @@ async function loadAlbums() {
 
         if (data.success && data.data && data.data.albums) {
             appState.albums = data.data.albums;
+            appState.albums.forEach(cacheAndPreloadAlbumCover);
             appState.filteredAlbums = [...appState.albums];
             renderAlbums();
         } else if (!data.success && response.status === 401) {
@@ -421,7 +467,9 @@ function renderAlbums() {
 
     grid.innerHTML = appState.filteredAlbums.map(album => `
         <div class="card" style="padding: 1.5rem; cursor: pointer; position: relative;" onclick="goToAlbum('${album.albumID}')">
-            <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">🎵</div>
+            ${cacheAndPreloadAlbumCover(album)
+                ? `<img src="${escapeHtml(resolveAlbumCoverUrl(album))}" alt="${escapeHtml(album.title)} album cover" class="album-grid-cover">`
+                : '<div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">🎵</div>'}
             <h3>${escapeHtml(album.title)}</h3>
             <p><strong>Artist:</strong> ${escapeHtml(album.artist || 'Unknown')}</p>
             <p><strong>Year:</strong> ${album.year || 'Unknown'}</p>
@@ -445,7 +493,6 @@ async function handleAddAlbum(event) {
     
     const title = document.getElementById('albumName')?.value?.trim();
     const artist = document.getElementById('artistName')?.value?.trim();
-    const year = document.getElementById('releaseYear')?.value;
     const comment = document.getElementById('albumComment')?.value?.trim() || '';
 
     if (!title || !artist) {
@@ -461,23 +508,53 @@ async function handleAddAlbum(event) {
             body: JSON.stringify({
                 title,
                 artist,
-                year: year ? parseInt(year) : null,
                 comment
             })
         });
         const data = await response.json();
 
         if (data.success) {
-            showSuccess('Album created!');
+            showSuccess('Album created! Fetching cover and release year in background...');
             document.getElementById('addAlbumForm').reset();
             closeModal('addAlbumModal');
             await loadAlbums();
+            const createdAlbumId = data?.data?.album?.albumID;
+            if (createdAlbumId) {
+                await waitForAlbumMetadata(createdAlbumId);
+            }
         } else {
             showError(data.message || 'Failed to create album');
         }
     } catch (error) {
         console.error('Error creating album:', error);
         showError('Error: ' + error.message);
+    }
+
+    async function waitForAlbumMetadata(albumId) {
+        const maxAttempts = 8;
+        const delayMs = 1200;
+
+        for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+            await new Promise(resolve => setTimeout(resolve, delayMs));
+            try {
+                const response = await fetch(`${API_BASE}/albums/${albumId}`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                const album = data?.data?.album;
+                if (!data.success || !album) continue;
+
+                cacheAndPreloadAlbumCover(album);
+                if (album.cover_url || album.year || album.spotify_album_id) {
+                    await loadAlbums();
+                    return;
+                }
+            } catch (error) {
+                console.warn('Metadata polling failed:', error);
+                return;
+            }
+        }
     }
 }
 

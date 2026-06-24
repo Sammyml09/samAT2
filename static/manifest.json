@@ -1,0 +1,10 @@
+{
+  "name": "Music Diary",
+  "short_name": "MusicDiary",
+  "start_url": "/albums",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#0d1117",
+  "description": "Track albums, songs, and ratings in your music diary."
+}

@@ -46,7 +46,13 @@ A Flask-based authentication system with secure user registration, login, and ac
    source venv/bin/activate
    ```
 
-4. **Run the Flask app:**
+4. **Create your environment file:**
+   ```bash
+   cp .env.example .env
+   ```
+   Then set `SECRET_KEY`, `SPOTIFY_CLIENT_ID`, and `SPOTIFY_CLIENT_SECRET` in `.env`.
+
+5. **Run the Flask app:**
    ```bash
    flask run 
    ```
@@ -70,7 +76,13 @@ A Flask-based authentication system with secure user registration, login, and ac
    venv\Scripts\activate
    ```
 
-4. **Run the Flask app:**
+4. **Create your environment file and update secrets:**
+   ```cmd
+   copy .env.example .env
+   ```
+   Then set `SECRET_KEY`, `SPOTIFY_CLIENT_ID`, and `SPOTIFY_CLIENT_SECRET` in `.env`.
+
+5. **Run the Flask app:**
    ```cmd
    flask run
    ```
@@ -144,6 +156,19 @@ samAT2/
 
 All dependencies are listed in `requirements.txt`
 
+## Album Metadata Source
+- Album cover and release year are fetched from the Spotify Web API.
+- Keep Spotify credentials in `.env` only (never hardcode keys in source files).
+- `SPOTIFY_API_KEY` can be used as an alias for `SPOTIFY_CLIENT_ID`.
+- `SPOTIFY_CLIENT_ID` by itself is not enough for album search; you also need `SPOTIFY_CLIENT_SECRET`, or a valid bearer `SPOTIFY_ACCESS_TOKEN`.
+- If local TLS certificate verification fails, set `SPOTIFY_TLS_VERIFY=false` (local development only).
+
+## Automation Feature: Album Recommendations
+- The album detail page includes an automated recommendation section.
+- The system uses the selected album's Spotify metadata and release year as input signals.
+- It returns 4 similar albums with cover art and names using Spotify data and randomized ranking for variety.
+- Recommendations load asynchronously so the rest of the page renders immediately.
+
 ## Security Features
 - Bcrypt password hashing with salting
 - HTTP-only cookies (prevents JavaScript access)
@@ -174,4 +199,3 @@ Then retry with `flask run`
 
 ### Database Errors
 Delete `app.db` and restart the app. The database will be recreated automatically on startup.
-

@@ -17,13 +17,23 @@ import secrets
 import sqlite3
 import logging
 import uuid
+import json
+import base64
+import threading
+import time
+import ssl
+import random
 import urllib.parse
+import urllib.error
+import urllib.request
+import certifi
+
+load_dotenv(override=True)
 
 # Setup
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY") or "dev-secret-key-change-in-production"
 app.permanent_session_lifetime = timedelta(minutes=20)
-load_dotenv()
 
 # Configure Logging
 logging.basicConfig(
@@ -40,6 +50,21 @@ app.config.update(
 )
 
 bcrypt = Bcrypt(app)
+
+SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token"
+SPOTIFY_SEARCH_URL = "https://api.spotify.com/v1/search"
+SPOTIFY_ALBUMS_URL = "https://api.spotify.com/v1/albums"
+SPOTIFY_ARTISTS_URL = "https://api.spotify.com/v1/artists"
+SPOTIFY_RECOMMENDATIONS_URL = "https://api.spotify.com/v1/recommendations"
+APP_USER_AGENT = "MusicDiaryPWA/1.0 (sam.lucas5@education.nsw.gov.au)"
+_spotify_token_cache = {"access_token": None, "expires_at": 0}
+_spotify_token_lock = threading.Lock()
+SPOTIFY_TLS_VERIFY = os.getenv("SPOTIFY_TLS_VERIFY", "true").strip().lower() not in ("0", "false", "no")
+TLS_CONTEXT = (
+    ssl.create_default_context(cafile=certifi.where())
+    if SPOTIFY_TLS_VERIFY
+    else ssl._create_unverified_context()
+)
 
 
 def get_db_connection():
@@ -70,10 +95,19 @@ def init_db():
             artist TEXT,
             year INTEGER,
             comment TEXT,
+            spotify_album_id TEXT,
+            cover_url TEXT,
             user_id INTEGER NOT NULL,
             FOREIGN KEY(user_id) REFERENCES users(userID)
         )
     """)
+
+    cursor.execute("PRAGMA table_info(albums)")
+    album_columns = {column["name"] for column in cursor.fetchall()}
+    if "spotify_album_id" not in album_columns:
+        cursor.execute("ALTER TABLE albums ADD COLUMN spotify_album_id TEXT")
+    if "cover_url" not in album_columns:
+        cursor.execute("ALTER TABLE albums ADD COLUMN cover_url TEXT")
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS songs (
@@ -91,6 +125,338 @@ def init_db():
     connection.commit()
     connection.close()
     logging.info("Database initialized")
+
+
+def fetch_json_get(url, params=None, headers=None, timeout=8):
+    """Execute an HTTP GET request and return JSON if successful."""
+    full_url = url
+    if params:
+        full_url = f"{url}?{urllib.parse.urlencode(params)}"
+
+    request_headers = {
+        "User-Agent": APP_USER_AGENT,
+        "Accept": "application/json"
+    }
+    if headers:
+        request_headers.update(headers)
+
+    req = urllib.request.Request(full_url, headers=request_headers, method="GET")
+
+    try:
+        with urllib.request.urlopen(req, timeout=timeout, context=TLS_CONTEXT) as response:
+            if response.status != 200:
+                return None
+
+            response_body = response.read().decode(response.headers.get_content_charset() or "utf-8")
+            return json.loads(response_body)
+    except urllib.error.HTTPError as err:
+        response_text = ""
+        try:
+            response_text = err.read().decode("utf-8", errors="ignore")[:300]
+        except Exception:
+            response_text = ""
+        logging.warning(
+            f"External API request failed for {full_url}: HTTP {err.code} {err.reason}. {response_text}"
+        )
+        return None
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, OSError) as err:
+        logging.warning(f"External API request failed for {full_url}: {err}")
+        return None
+
+
+def fetch_json_post_form(url, form_data, headers=None, timeout=8):
+    """Execute an HTTP form POST request and return JSON if successful."""
+    request_headers = {
+        "User-Agent": APP_USER_AGENT,
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+    if headers:
+        request_headers.update(headers)
+
+    encoded_body = urllib.parse.urlencode(form_data).encode("utf-8")
+    req = urllib.request.Request(url, headers=request_headers, data=encoded_body, method="POST")
+
+    try:
+        with urllib.request.urlopen(req, timeout=timeout, context=TLS_CONTEXT) as response:
+            if response.status != 200:
+                return None
+
+            response_body = response.read().decode(response.headers.get_content_charset() or "utf-8")
+            return json.loads(response_body)
+    except urllib.error.HTTPError as err:
+        response_text = ""
+        try:
+            response_text = err.read().decode("utf-8", errors="ignore")[:300]
+        except Exception:
+            response_text = ""
+        logging.warning(
+            f"External API request failed for {url}: HTTP {err.code} {err.reason}. {response_text}"
+        )
+        return None
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, OSError) as err:
+        logging.warning(f"External API request failed for {url}: {err}")
+        return None
+
+
+def release_year_from_album(album):
+    release_date = album.get("release_date")
+    if not isinstance(release_date, str) or len(release_date) < 4:
+        return None
+
+    year_prefix = release_date[:4]
+    if not year_prefix.isdigit():
+        return None
+    return int(year_prefix)
+
+
+def get_spotify_access_token():
+    with _spotify_token_lock:
+        client_id = (
+            os.getenv("SPOTIFY_CLIENT_ID")
+            or os.getenv("SPOTIFY_API_KEY")
+            or os.getenv("SPOTIFY_KEY")
+            or ""
+        ).strip()
+        client_secret = (
+            os.getenv("SPOTIFY_CLIENT_SECRET")
+            or os.getenv("SPOTIFY_API_SECRET")
+            or os.getenv("SPOTIFY_SECRET")
+            or ""
+        ).strip()
+        if client_id and client_secret:
+            cached_token = _spotify_token_cache.get("access_token")
+            expires_at = _spotify_token_cache.get("expires_at", 0)
+            if cached_token and time.time() < (expires_at - 30):
+                return cached_token
+
+            basic_auth = base64.b64encode(f"{client_id}:{client_secret}".encode("utf-8")).decode("ascii")
+            token_response = fetch_json_post_form(
+                SPOTIFY_TOKEN_URL,
+                form_data={"grant_type": "client_credentials"},
+                headers={"Authorization": f"Basic {basic_auth}"}
+            )
+            if not token_response:
+                return None
+
+            access_token = token_response.get("access_token")
+            expires_in = token_response.get("expires_in")
+            if not isinstance(access_token, str) or not access_token:
+                return None
+
+            expires_in_seconds = int(expires_in) if isinstance(expires_in, int) else 3600
+            _spotify_token_cache["access_token"] = access_token
+            _spotify_token_cache["expires_at"] = time.time() + max(0, expires_in_seconds)
+            return access_token
+
+        configured_access_token = (os.getenv("SPOTIFY_ACCESS_TOKEN") or "").strip()
+        if configured_access_token:
+            # Spotify bearer tokens are typically long JWT-like values.
+            # If a short string is supplied, it's usually a client ID/API key by mistake.
+            if len(configured_access_token) < 80:
+                logging.warning(
+                    "SPOTIFY_ACCESS_TOKEN appears invalid/too short. "
+                    "Use SPOTIFY_CLIENT_ID + SPOTIFY_CLIENT_SECRET, or a real bearer access token."
+                )
+                return None
+            return configured_access_token
+
+        if client_id and not client_secret:
+            logging.warning("Spotify client ID is configured but SPOTIFY_CLIENT_SECRET is missing")
+            return None
+
+        cached_token = _spotify_token_cache.get("access_token")
+        expires_at = _spotify_token_cache.get("expires_at", 0)
+        if cached_token and time.time() < (expires_at - 30):
+            return cached_token
+
+        logging.warning("Spotify credentials are not configured")
+        return None
+
+
+def resolve_album_metadata(title, artist):
+    """Find Spotify album ID, cover art URL, and release year."""
+    if not title or not artist:
+        return None, None, None
+
+    access_token = get_spotify_access_token()
+    if not access_token:
+        return None, None, None
+
+    search_query = f'album:"{title}" artist:"{artist}"'
+    search_response = fetch_json_get(
+        SPOTIFY_SEARCH_URL,
+        params={"q": search_query, "type": "album", "limit": 5},
+        headers={"Authorization": f"Bearer {access_token}"}
+    )
+    if not search_response:
+        return None, None, None
+
+    albums = (search_response.get("albums") or {}).get("items") or []
+    if not albums:
+        return None, None, None
+
+    first_album = albums[0]
+    album_id = first_album.get("id")
+    images = first_album.get("images") or []
+    cover_url = images[0].get("url") if images and isinstance(images[0], dict) else None
+    release_year = release_year_from_album(first_album)
+    return album_id, cover_url, release_year
+
+
+def resolve_album_metadata_async(album_id, title, artist):
+    """Background task for fetching and persisting album metadata."""
+    spotify_album_id, cover_url, release_year = resolve_album_metadata(title, artist)
+    if spotify_album_id is None and cover_url is None and release_year is None:
+        return
+
+    connection = None
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute(
+            """
+            UPDATE albums
+            SET spotify_album_id = COALESCE(?, spotify_album_id),
+                cover_url = COALESCE(?, cover_url),
+                year = COALESCE(?, year)
+            WHERE albumID = ?
+            """,
+            (spotify_album_id, cover_url, release_year, album_id)
+        )
+        connection.commit()
+    except sqlite3.Error as err:
+        logging.warning(f"Failed to persist metadata for album {album_id}: {err}")
+    finally:
+        if connection is not None:
+            connection.close()
+
+
+def parse_spotify_album_result(album):
+    images = album.get("images") or []
+    cover_url = images[0].get("url") if images and isinstance(images[0], dict) else None
+    artists = album.get("artists") or []
+    artist_names = [artist.get("name") for artist in artists if isinstance(artist, dict) and artist.get("name")]
+
+    return {
+        "spotify_album_id": album.get("id"),
+        "title": album.get("name"),
+        "artist": ", ".join(artist_names) if artist_names else "Unknown",
+        "year": release_year_from_album(album),
+        "cover_url": cover_url
+    }
+
+
+def get_album_recommendations(album):
+    """Recommend albums using search-based discovery."""
+    title = album.get("title")
+    artist = album.get("artist")
+    spotify_album_id = album.get("spotify_album_id")
+    if not title or not artist:
+       return "", []
+
+    access_token = get_spotify_access_token()
+    if not access_token:
+       return "", []
+
+    headers = {"Authorization": f"Bearer {access_token}"}
+    if not spotify_album_id:
+       spotify_album_id, _, _ = resolve_album_metadata(title, artist)
+       if not spotify_album_id:
+           return "", []
+
+    # Get primary artist name
+    primary_artist_name = artist
+    album_response = fetch_json_get(f"{SPOTIFY_ALBUMS_URL}/{spotify_album_id}", headers=headers)
+    if album_response:
+        album_artists = album_response.get("artists") or []
+        if album_artists and isinstance(album_artists[0], dict):
+            primary_artist_name = album_artists[0].get("name", artist)
+    
+    # Get similar albums through search
+    # Search for albums by the same artist
+    search_response = fetch_json_get(
+        SPOTIFY_SEARCH_URL,
+        params={"q": f'artist:"{artist}"', "type": "album", "limit": 10},
+        headers=headers
+    )
+    
+    if not search_response:
+       return "", []
+    
+    albums = (search_response.get("albums") or {}).get("items") or []
+    if not albums:
+       return "", []
+    
+    rng = random.SystemRandom()
+    rng.shuffle(albums)
+    
+    recommendation_albums = []
+    seen_albums = {spotify_album_id}
+    
+    for album_data in albums:
+        album_id = album_data.get("id")
+        if not album_id or album_id in seen_albums:
+            continue
+        
+        parsed_album = parse_spotify_album_result(album_data)
+        if parsed_album.get("title") and parsed_album.get("cover_url"):
+            recommendation_albums.append(parsed_album)
+            seen_albums.add(album_id)
+            
+            if len(recommendation_albums) >= 4:
+                break
+    
+    if not recommendation_albums:
+       return "", []
+    
+    profile_label = primary_artist_name
+    return profile_label, recommendation_albums[:4]
+
+
+
+    
+    if not recommendations_response:
+       return "", []
+    
+    tracks = recommendations_response.get("tracks") or []
+    if not tracks:
+       return "", []
+    
+    seen_albums = {spotify_album_id}
+    recommendation_albums = []
+    
+    rng.shuffle(tracks)
+    
+    for track in tracks:
+       track_album = track.get("album") or {}
+       album_id = track_album.get("id")
+        
+       if not album_id or album_id in seen_albums:
+           continue
+        
+       track_artists = track.get("artists") or []
+       track_artist_name = track_artists[0].get("name", "") if track_artists and isinstance(track_artists[0], dict) else ""
+        
+       if track_artist_name.lower() == primary_artist_name.lower():
+           continue
+        
+       parsed_album = parse_spotify_album_result(track_album)
+       if parsed_album.get("title") and parsed_album.get("cover_url"):
+           recommendation_albums.append(parsed_album)
+           seen_albums.add(album_id)
+            
+           if len(recommendation_albums) >= 4:
+               break
+    
+    if not recommendation_albums:
+       return "", []
+    
+    profile_label = primary_artist_name
+    return profile_label, recommendation_albums[:4]
+
+
+
 
 
 @app.before_request
@@ -444,7 +810,6 @@ def create_album():
     payload = request.get_json(silent=True) or {}
     title = payload.get("title", "")
     artist = payload.get("artist")
-    year = payload.get("year")
     comment = payload.get("comment", "")
 
     if not isinstance(title, str):
@@ -456,26 +821,38 @@ def create_album():
 
     if artist is not None and not isinstance(artist, str):
         return json_response(False, "Artist must be a string", None, 400)
-
-    if year is not None and (not isinstance(year, int) or isinstance(year, bool)):
-        return json_response(False, "Year must be an integer", None, 400)
+    if isinstance(artist, str):
+        artist = artist.strip()
+        if not artist:
+            artist = None
 
     album_id = str(uuid.uuid4())
     connection = get_db_connection()
     cursor = connection.cursor()
     cursor.execute(
-        "INSERT INTO albums (albumID, title, artist, year, comment, user_id) VALUES (?, ?, ?, ?, ?, ?)",
-        (album_id, title, artist, year, comment, user_id)
+        "INSERT INTO albums (albumID, title, artist, year, comment, spotify_album_id, cover_url, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        (album_id, title, artist, None, comment, None, None, user_id)
     )
     connection.commit()
     connection.close()
+
+    if artist:
+        metadata_thread = threading.Thread(
+            target=resolve_album_metadata_async,
+            args=(album_id, title, artist),
+            daemon=True
+        )
+        metadata_thread.start()
 
     return json_response(True, "Album created", {"album": {
         "albumID": album_id,
         "title": title,
         "artist": artist,
-        "year": year,
+        "year": None,
         "comment": comment,
+        "spotify_album_id": None,
+        "cover_url": None,
+        "metadata_status": "pending" if artist else "skipped",
         "user_id": user_id
     }}, 201)
 
@@ -498,6 +875,32 @@ def get_album(album_id):
         return json_response(False, "Forbidden", None, 403)
 
     return json_response(True, "Album retrieved", {"album": dict(album)}, 200)
+
+
+@app.route("/api/albums/<album_id>/recommendations", methods=["GET"])
+def get_album_recommendations_api(album_id):
+    user_id, auth_error = require_login()
+    if auth_error:
+        return auth_error
+
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM albums WHERE albumID = ?", (album_id,))
+    album = cursor.fetchone()
+    connection.close()
+
+    if not album:
+        return json_response(False, "Album not found", None, 404)
+    if album["user_id"] != user_id:
+        return json_response(False, "Forbidden", None, 403)
+
+    profile_label, recommendations = get_album_recommendations(dict(album))
+    return json_response(
+        True,
+        "Album recommendations retrieved",
+        {"profile": profile_label, "recommendations": recommendations},
+        200
+    )
 
 
 @app.route("/api/albums/<album_id>", methods=["PUT"])
