@@ -54,8 +54,6 @@ bcrypt = Bcrypt(app)
 SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token"
 SPOTIFY_SEARCH_URL = "https://api.spotify.com/v1/search"
 SPOTIFY_ALBUMS_URL = "https://api.spotify.com/v1/albums"
-SPOTIFY_ARTISTS_URL = "https://api.spotify.com/v1/artists"
-SPOTIFY_RECOMMENDATIONS_URL = "https://api.spotify.com/v1/recommendations"
 APP_USER_AGENT = "MusicDiaryPWA/1.0 (sam.lucas5@education.nsw.gov.au)"
 _spotify_token_cache = {"access_token": None, "expires_at": 0}
 _spotify_token_lock = threading.Lock()
@@ -347,116 +345,167 @@ def parse_spotify_album_result(album):
     }
 
 
+def infer_genres_from_album_context(title, artist):
+    """Fallback decision-tree genre inference when Spotify genre metadata is unavailable."""
+    context = f"{title or ''} {artist or ''}".lower()
+    decision_rules = [
+        (("fall out boy", "my chemical romance", "paramore", "panic! at the disco", "blink-182", "sum 41"), ["pop punk", "emo"]),
+        (("nirvana", "pearl jam", "soundgarden", "alice in chains"), ["grunge", "alternative rock"]),
+        (("metallica", "slipknot", "linkin park", "avenged sevenfold"), ["metal", "hard rock"]),
+        (("drake", "kendrick", "travis scott", "j cole"), ["hip hop", "rap"]),
+        (("taylor swift", "olivia rodrigo", "dua lipa", "ariana grande"), ["pop", "dance pop"]),
+        (("billie eilish", "lorde", "phoebe bridgers", "the 1975"), ["indie pop", "alternative"]),
+    ]
+
+    for keywords, genres in decision_rules:
+        if any(keyword in context for keyword in keywords):
+            return genres
+
+    return ["alternative rock", "indie rock", "rock"]
+
+
 def get_album_recommendations(album):
-    """Recommend albums using search-based discovery."""
+    """Recommend albums using Spotify album tracks, genre signals, and release year."""
     title = album.get("title")
     artist = album.get("artist")
     spotify_album_id = album.get("spotify_album_id")
     if not title or not artist:
-       return "", []
+        return "", []
 
     access_token = get_spotify_access_token()
     if not access_token:
-       return "", []
+        return "", []
 
     headers = {"Authorization": f"Bearer {access_token}"}
     if not spotify_album_id:
-       spotify_album_id, _, _ = resolve_album_metadata(title, artist)
-       if not spotify_album_id:
-           return "", []
+        spotify_album_id, _, _ = resolve_album_metadata(title, artist)
+        if not spotify_album_id:
+            return "", []
 
-    # Get primary artist name
-    primary_artist_name = artist
     album_response = fetch_json_get(f"{SPOTIFY_ALBUMS_URL}/{spotify_album_id}", headers=headers)
-    if album_response:
-        album_artists = album_response.get("artists") or []
-        if album_artists and isinstance(album_artists[0], dict):
-            primary_artist_name = album_artists[0].get("name", artist)
-    
-    # Get similar albums through search
-    # Search for albums by the same artist
-    search_response = fetch_json_get(
-        SPOTIFY_SEARCH_URL,
-        params={"q": f'artist:"{artist}"', "type": "album", "limit": 10},
-        headers=headers
-    )
-    
-    if not search_response:
-       return "", []
-    
-    albums = (search_response.get("albums") or {}).get("items") or []
-    if not albums:
-       return "", []
-    
+    if not album_response:
+        return "", []
+
+    track_items = (album_response.get("tracks") or {}).get("items") or []
+    track_titles = [track.get("name") for track in track_items if isinstance(track, dict) and isinstance(track.get("name"), str)]
+    album_year = release_year_from_album(album_response) or album.get("year")
     rng = random.SystemRandom()
-    rng.shuffle(albums)
-    
-    recommendation_albums = []
-    seen_albums = {spotify_album_id}
-    
-    for album_data in albums:
-        album_id = album_data.get("id")
-        if not album_id or album_id in seen_albums:
+
+    inferred_genres = infer_genres_from_album_context(title, artist)
+    profile_genres = list(inferred_genres[:3])
+
+    if track_titles:
+        rng.shuffle(track_titles)
+        track_title_snippet = " ".join(track_titles[:2]).lower()
+        if any(keyword in track_title_snippet for keyword in ("love", "heart", "stay", "down")) and "emo" not in profile_genres:
+            profile_genres.insert(0, "emo")
+        if any(keyword in track_title_snippet for keyword in ("summer", "dance", "party", "teen")) and "pop punk" not in profile_genres:
+            profile_genres.insert(0, "pop punk")
+
+    genre_queries = profile_genres[:]
+    rng.shuffle(genre_queries)
+
+    candidate_pool = []
+    seen_candidate_albums = {spotify_album_id}
+
+    for genre in genre_queries:
+        query_parts = [f'genre:"{genre}"']
+        if isinstance(album_year, int):
+            lower_year = max(1970, album_year - 5)
+            upper_year = album_year + 5
+            query_parts.append(f"year:{lower_year}-{upper_year}")
+        search_response = fetch_json_get(
+            SPOTIFY_SEARCH_URL,
+            params={"q": " ".join(query_parts), "type": "track", "limit": 10},
+            headers=headers
+        )
+        if not search_response:
             continue
-        
-        parsed_album = parse_spotify_album_result(album_data)
-        if parsed_album.get("title") and parsed_album.get("cover_url"):
-            recommendation_albums.append(parsed_album)
-            seen_albums.add(album_id)
-            
-            if len(recommendation_albums) >= 4:
+
+        tracks = (search_response.get("tracks") or {}).get("items") or []
+        rng.shuffle(tracks)
+        for track in tracks:
+            candidate_album = track.get("album") or {}
+            candidate_album_id = candidate_album.get("id")
+            if not candidate_album_id or candidate_album_id in seen_candidate_albums:
+                continue
+
+            candidate_pool.append(candidate_album)
+            seen_candidate_albums.add(candidate_album_id)
+
+    if len(candidate_pool) < 4:
+        fallback_queries = []
+        if isinstance(album_year, int):
+            fallback_queries.extend([
+                f'year:{max(1970, album_year - 5)}-{album_year + 5}',
+                f'year:{max(1970, album_year - 3)}-{album_year + 3}',
+            ])
+        fallback_queries.extend(profile_genres)
+        rng.shuffle(fallback_queries)
+
+        for query_value in fallback_queries:
+            search_response = fetch_json_get(
+                SPOTIFY_SEARCH_URL,
+                params={"q": query_value, "type": "track", "limit": 10},
+                headers=headers
+            )
+            if not search_response:
+                continue
+
+            tracks = (search_response.get("tracks") or {}).get("items") or []
+            rng.shuffle(tracks)
+            for track in tracks:
+                candidate_album = track.get("album") or {}
+                candidate_album_id = candidate_album.get("id")
+                if not candidate_album_id or candidate_album_id in seen_candidate_albums:
+                    continue
+
+                candidate_pool.append(candidate_album)
+                seen_candidate_albums.add(candidate_album_id)
+                if len(candidate_pool) >= 12:
+                    break
+            if len(candidate_pool) >= 12:
                 break
-    
-    if not recommendation_albums:
-       return "", []
-    
-    profile_label = primary_artist_name
-    return profile_label, recommendation_albums[:4]
 
+    if not candidate_pool:
+        return ", ".join(profile_genres[:3]), []
 
+    ranked_candidates = []
+    seen_ranked_albums = set()
+    selected_year = album_year if isinstance(album_year, int) else None
 
-    
-    if not recommendations_response:
-       return "", []
-    
-    tracks = recommendations_response.get("tracks") or []
-    if not tracks:
-       return "", []
-    
-    seen_albums = {spotify_album_id}
-    recommendation_albums = []
-    
-    rng.shuffle(tracks)
-    
-    for track in tracks:
-       track_album = track.get("album") or {}
-       album_id = track_album.get("id")
-        
-       if not album_id or album_id in seen_albums:
-           continue
-        
-       track_artists = track.get("artists") or []
-       track_artist_name = track_artists[0].get("name", "") if track_artists and isinstance(track_artists[0], dict) else ""
-        
-       if track_artist_name.lower() == primary_artist_name.lower():
-           continue
-        
-       parsed_album = parse_spotify_album_result(track_album)
-       if parsed_album.get("title") and parsed_album.get("cover_url"):
-           recommendation_albums.append(parsed_album)
-           seen_albums.add(album_id)
-            
-           if len(recommendation_albums) >= 4:
-               break
-    
-    if not recommendation_albums:
-       return "", []
-    
-    profile_label = primary_artist_name
-    return profile_label, recommendation_albums[:4]
+    for candidate_album in candidate_pool:
+        candidate_id = candidate_album.get("id")
+        if not candidate_id or candidate_id in seen_ranked_albums:
+            continue
 
+        parsed_album = parse_spotify_album_result(candidate_album)
+        if not parsed_album.get("title") or not parsed_album.get("cover_url"):
+            continue
 
+        candidate_year = parsed_album.get("year")
+        if isinstance(selected_year, int) and isinstance(candidate_year, int):
+            year_distance = abs(candidate_year - selected_year)
+        else:
+            year_distance = 5
 
+        genre_bonus = 0 if not profile_genres else (0 if candidate_album.get("album_type") == "compilation" else -0.3)
+        same_artist_penalty = 0.8 if parsed_album.get("artist", "").lower() == artist.lower() else 0.0
+        jitter = rng.uniform(0, 0.85)
+        score = year_distance + genre_bonus + same_artist_penalty + jitter
+
+        ranked_candidates.append((score, parsed_album))
+        seen_ranked_albums.add(candidate_id)
+
+    ranked_candidates.sort(key=lambda entry: entry[0])
+
+    recommendations = []
+    for _, parsed_album in ranked_candidates:
+        recommendations.append(parsed_album)
+        if len(recommendations) >= 4:
+            break
+
+    return ", ".join(profile_genres[:3]), recommendations[:4]
 
 
 @app.before_request
