@@ -4953,3 +4953,139 @@
 2026-06-25 00:19:01,967 - INFO - 127.0.0.1 - - [25/Jun/2026 00:19:01] "GET /static/js/script.js HTTP/1.1" 200 -
 2026-06-25 00:19:01,984 - INFO - 127.0.0.1 - - [25/Jun/2026 00:19:01] "GET /api/albums HTTP/1.1" 200 -
 2026-06-25 00:19:01,989 - INFO - 127.0.0.1 - - [25/Jun/2026 00:19:01] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:04:29,030 - INFO - Database initialized
+2026-06-25 10:04:49,171 - INFO - Database initialized
+2026-06-25 10:04:49,176 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-25 10:04:49,176 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-25 10:04:52,718 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:52] "GET / HTTP/1.1" 200 -
+2026-06-25 10:04:52,737 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:52] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-25 10:04:52,738 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:52] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-25 10:04:52,739 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:52] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:04:52,765 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:52] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:04:52,766 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:52] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:04:56,334 - INFO - Login attempt: 'Harrold'
+2026-06-25 10:04:56,533 - INFO - Login successful: 'Harrold'
+2026-06-25 10:04:56,533 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:56] "[32mPOST /api/login HTTP/1.1[0m" 302 -
+2026-06-25 10:04:56,539 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:56] "GET /home HTTP/1.1" 200 -
+2026-06-25 10:04:56,562 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:56] "[32mGET /static//css/style.css HTTP/1.1[0m" 308 -
+2026-06-25 10:04:56,564 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:56] "[32mGET /static//js/script.js HTTP/1.1[0m" 308 -
+2026-06-25 10:04:56,564 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:56] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:04:56,587 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:56] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:04:56,588 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:56] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:04:59,871 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:59] "GET /albums HTTP/1.1" 200 -
+2026-06-25 10:04:59,889 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:59] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:04:59,890 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:59] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:04:59,890 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:59] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:04:59,917 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:59] "GET /api/albums HTTP/1.1" 200 -
+2026-06-25 10:04:59,919 - INFO - 127.0.0.1 - - [25/Jun/2026 10:04:59] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:05:01,583 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:01] "GET /album-detail?id=fb5f0c3d-61d2-44b4-96a8-71fc0386b8ea HTTP/1.1" 200 -
+2026-06-25 10:05:01,611 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:01] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:05:01,611 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:01] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:05:01,611 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:01] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:05:01,634 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:01] "GET /api/albums/fb5f0c3d-61d2-44b4-96a8-71fc0386b8ea HTTP/1.1" 200 -
+2026-06-25 10:05:01,636 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:01] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:05:01,653 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:01] "GET /api/albums/fb5f0c3d-61d2-44b4-96a8-71fc0386b8ea/songs HTTP/1.1" 200 -
+2026-06-25 10:05:01,696 - WARNING - External API request failed for https://accounts.spotify.com/api/token: HTTP 403 Forbidden. <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=.85" />
+        <title>NSW DoE Secure Internet at Edge</title>
+        <meta name="key
+2026-06-25 10:05:01,696 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:01] "GET /api/albums/fb5f0c3d-61d2-44b4-96a8-71fc0386b8ea/recommendations?ts=1782345901655 HTTP/1.1" 200 -
+2026-06-25 10:05:04,568 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:04] "GET /albums HTTP/1.1" 200 -
+2026-06-25 10:05:04,592 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:04] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:05:04,593 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:04] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:05:04,593 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:04] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:05:04,614 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:04] "GET /api/albums HTTP/1.1" 200 -
+2026-06-25 10:05:04,619 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:04] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:05:05,740 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:05] "GET /album-detail?id=c3b29f5a-6411-4192-b226-ede987b843db HTTP/1.1" 200 -
+2026-06-25 10:05:05,764 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:05] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:05:05,766 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:05] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:05:05,767 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:05] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:05:05,786 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:05] "GET /api/albums/c3b29f5a-6411-4192-b226-ede987b843db HTTP/1.1" 200 -
+2026-06-25 10:05:05,791 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:05] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:05:05,810 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:05] "GET /api/albums/c3b29f5a-6411-4192-b226-ede987b843db/songs HTTP/1.1" 200 -
+2026-06-25 10:05:05,865 - WARNING - External API request failed for https://accounts.spotify.com/api/token: HTTP 403 Forbidden. <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=.85" />
+        <title>NSW DoE Secure Internet at Edge</title>
+        <meta name="key
+2026-06-25 10:05:05,865 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:05] "GET /api/albums/c3b29f5a-6411-4192-b226-ede987b843db/recommendations?ts=1782345905832 HTTP/1.1" 200 -
+2026-06-25 10:05:07,898 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:07] "GET /albums HTTP/1.1" 200 -
+2026-06-25 10:05:07,936 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:07] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:05:07,938 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:07] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:05:07,938 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:07] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:05:07,961 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:07] "GET /api/albums HTTP/1.1" 200 -
+2026-06-25 10:05:07,966 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:07] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:05:09,416 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:09] "GET /album-detail?id=3e3670e2-b4e4-43e3-9f66-0dd5654179ec HTTP/1.1" 200 -
+2026-06-25 10:05:09,452 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:09] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:05:09,453 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:09] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:05:09,453 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:09] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:05:09,473 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:09] "GET /api/albums/3e3670e2-b4e4-43e3-9f66-0dd5654179ec HTTP/1.1" 200 -
+2026-06-25 10:05:09,478 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:09] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:05:09,496 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:09] "GET /api/albums/3e3670e2-b4e4-43e3-9f66-0dd5654179ec/songs HTTP/1.1" 200 -
+2026-06-25 10:05:09,592 - WARNING - External API request failed for https://accounts.spotify.com/api/token: HTTP 403 Forbidden. <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=.85" />
+        <title>NSW DoE Secure Internet at Edge</title>
+        <meta name="key
+2026-06-25 10:05:09,592 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:09] "GET /api/albums/3e3670e2-b4e4-43e3-9f66-0dd5654179ec/recommendations?ts=1782345909516 HTTP/1.1" 200 -
+2026-06-25 10:05:38,090 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:38] "GET /album-detail?id=3e3670e2-b4e4-43e3-9f66-0dd5654179ec HTTP/1.1" 200 -
+2026-06-25 10:05:38,129 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:38] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:05:38,130 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:38] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:05:38,130 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:38] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:05:38,160 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:38] "GET /api/albums/3e3670e2-b4e4-43e3-9f66-0dd5654179ec HTTP/1.1" 200 -
+2026-06-25 10:05:38,174 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:38] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:05:38,177 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:38] "GET /api/albums/3e3670e2-b4e4-43e3-9f66-0dd5654179ec/songs HTTP/1.1" 200 -
+2026-06-25 10:05:40,231 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:40] "GET /api/albums/3e3670e2-b4e4-43e3-9f66-0dd5654179ec/recommendations?ts=1782345938180 HTTP/1.1" 200 -
+2026-06-25 10:05:44,759 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:44] "GET /albums HTTP/1.1" 200 -
+2026-06-25 10:05:44,793 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:44] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:05:44,793 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:44] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:05:44,794 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:44] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:05:44,817 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:44] "GET /api/albums HTTP/1.1" 200 -
+2026-06-25 10:05:44,823 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:44] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:05:45,908 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:45] "GET /album-detail?id=fb5f0c3d-61d2-44b4-96a8-71fc0386b8ea HTTP/1.1" 200 -
+2026-06-25 10:05:45,939 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:45] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:05:45,940 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:45] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:05:45,940 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:45] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:05:45,960 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:45] "GET /api/albums/fb5f0c3d-61d2-44b4-96a8-71fc0386b8ea HTTP/1.1" 200 -
+2026-06-25 10:05:45,966 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:45] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:05:45,991 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:45] "GET /api/albums/fb5f0c3d-61d2-44b4-96a8-71fc0386b8ea/songs HTTP/1.1" 200 -
+2026-06-25 10:05:47,663 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:47] "GET /api/albums/fb5f0c3d-61d2-44b4-96a8-71fc0386b8ea/recommendations?ts=1782345946007 HTTP/1.1" 200 -
+2026-06-25 10:05:51,202 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:51] "GET /albums HTTP/1.1" 200 -
+2026-06-25 10:05:51,231 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:51] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:05:51,232 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:51] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:05:51,232 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:51] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:05:51,254 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:51] "GET /api/albums HTTP/1.1" 200 -
+2026-06-25 10:05:51,261 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:51] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:05:53,435 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:53] "GET /album-detail?id=4baaf957-4444-4509-9354-6c9155e113e1 HTTP/1.1" 200 -
+2026-06-25 10:05:53,475 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:53] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:05:53,477 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:53] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:05:53,477 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:53] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:05:53,499 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:53] "GET /api/albums/4baaf957-4444-4509-9354-6c9155e113e1 HTTP/1.1" 200 -
+2026-06-25 10:05:53,502 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:53] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:05:53,521 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:53] "GET /api/albums/4baaf957-4444-4509-9354-6c9155e113e1/songs HTTP/1.1" 200 -
+2026-06-25 10:05:55,123 - INFO - 127.0.0.1 - - [25/Jun/2026 10:05:55] "GET /api/albums/4baaf957-4444-4509-9354-6c9155e113e1/recommendations?ts=1782345953523 HTTP/1.1" 200 -
+2026-06-25 10:06:00,796 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:00] "GET /albums HTTP/1.1" 200 -
+2026-06-25 10:06:00,832 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:00] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:06:00,833 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:00] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:06:00,834 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:00] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:06:00,858 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:00] "GET /api/albums HTTP/1.1" 200 -
+2026-06-25 10:06:00,866 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:00] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:06:03,088 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:03] "GET /album-detail?id=d18c8d99-e350-4e56-b637-aeaa56dc5a62 HTTP/1.1" 200 -
+2026-06-25 10:06:03,128 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:03] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-06-25 10:06:03,130 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:03] "GET /static/js/script.js HTTP/1.1" 200 -
+2026-06-25 10:06:03,130 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:03] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-25 10:06:03,150 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:03] "GET /api/albums/d18c8d99-e350-4e56-b637-aeaa56dc5a62 HTTP/1.1" 200 -
+2026-06-25 10:06:03,155 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:03] "GET /static/manifest.json HTTP/1.1" 200 -
+2026-06-25 10:06:03,172 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:03] "GET /api/albums/d18c8d99-e350-4e56-b637-aeaa56dc5a62/songs HTTP/1.1" 200 -
+2026-06-25 10:06:04,524 - INFO - 127.0.0.1 - - [25/Jun/2026 10:06:04] "GET /api/albums/d18c8d99-e350-4e56-b637-aeaa56dc5a62/recommendations?ts=1782345963173 HTTP/1.1" 200 -
